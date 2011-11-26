@@ -8,9 +8,9 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 
-public class DemoActivity1 extends Activity{
+public class TabActivity extends Activity{
 	
-	private static final String TAG="DemoActivity1";
+	private static final String TAG="TabActivity";
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

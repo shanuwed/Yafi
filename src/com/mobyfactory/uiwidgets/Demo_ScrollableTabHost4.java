@@ -34,7 +34,7 @@ public class Demo_ScrollableTabHost4  extends ScrollableTabActivity{
         {
         	/*
         	Intent intent;
-        	if (i%2==0) intent = new Intent(this, DemoActivity1.class);
+        	if (i%2==0) intent = new Intent(this, TabActivity.class);
         	else intent = new Intent(this, DemoActivity2.class);
         	*/
         	

@@ -11,8 +11,10 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Toast;
 
-public class YafiActivity extends ScrollableTabActivity {
+public class MainActivity extends ScrollableTabActivity {
 	
     AddNewTabReceiver addNewTabReceiver = new AddNewTabReceiver();
 
@@ -29,7 +31,7 @@ public class YafiActivity extends ScrollableTabActivity {
         
         for (int i=0; i<2; i++)
         {
-        	Intent intent= new Intent(this, DemoActivity1.class);
+        	Intent intent= new Intent(this, TabActivity.class);
         	
         	/*
         	 * This adds a title and an image to the tab bar button
@@ -39,7 +41,7 @@ public class YafiActivity extends ScrollableTabActivity {
         	this.addTab("title"+i, 
         		R.drawable.star, 
         		RadioStateDrawable.SHADE_GRAY, 
-        		RadioStateDrawable.SHADE_GREEN,
+        		RadioStateDrawable.SHADE_BLUE,
         		intent);
         }
         
@@ -64,7 +66,6 @@ public class YafiActivity extends ScrollableTabActivity {
     @Override
     public void onResume()
     {
-        // register
         registerReceiver(addNewTabReceiver, 
         		new IntentFilter(Constants.ADDNEWTAB_ACTION));
         super.onResume();
@@ -89,15 +90,35 @@ public class YafiActivity extends ScrollableTabActivity {
 			String action = intent.getAction();
 			if(action.equals(Constants.ADDNEWTAB_ACTION)){
 				// Add a new tab
-				Intent actionIntent = new Intent(context, DemoActivity1.class);
+				Intent actionIntent = new Intent(context, TabActivity.class);
 				actionIntent.putExtra(Constants.KEY_URL, "http://www.yahoo.com" );
-	        	((YafiActivity)context).addTab("new tab", 
+	        	((MainActivity)context).addTab("new tab", 
 	            		R.drawable.star, 
 	            		RadioStateDrawable.SHADE_GRAY, 
-	            		RadioStateDrawable.SHADE_GREEN,
+	            		RadioStateDrawable.SHADE_BLUE,
 	            		actionIntent);
 			}
-			((YafiActivity)context).commit();
+			((MainActivity)context).commit();
 		}
     }
+    
+    /*
+     * Below is to handle the actionbar events
+     */
+    
+    public void onEnter(View v)
+    {
+    	Toast.makeText(this, "enter", Toast.LENGTH_SHORT).show();
+    }
+    
+    public void onSearch(View v)
+    {
+    	Toast.makeText(this, "search", Toast.LENGTH_SHORT).show();
+    }
+    
+    public void onHome (View v)
+    {
+    	Toast.makeText(this, "home", Toast.LENGTH_SHORT).show();
+    }
+
 }
