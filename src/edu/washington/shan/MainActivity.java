@@ -102,23 +102,47 @@ public class MainActivity extends ScrollableTabActivity {
 		}
     }
     
+    /* (non-Javadoc)
+	 * @see android.app.Activity#onActivityResult(int, int, android.content.Intent)
+	 */
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		// TODO Auto-generated method stub
+		super.onActivityResult(requestCode, resultCode, data);
+		
+		// TODO check the preferences and start new tabs...
+	}
+
     /*
      * Below is to handle the actionbar events
      */
     
-    public void onEnter(View v)
+    public void onRefresh(View v)
     {
-    	Toast.makeText(this, "enter", Toast.LENGTH_SHORT).show();
+    	// 1) Figure out the active tab
+    	// 2) Send "refresh" message to it
+    	// Each tab should "know" what it's subscribing
+    	
+    	//Toast.makeText(this, "enter", Toast.LENGTH_SHORT).show();
+    	//Intent newTabIntent = new Intent(Constants.ADDNEWTAB_ACTION);
+    	//sendBroadcast(newTabIntent);
+    	SubscriptionManager subscription = new SubscriptionManager(this);
+    	subscription.getRssFeed("http://finance.yahoo.com/rss/ScientificTechnicalInstruments");
     }
     
-    public void onSearch(View v)
+    /**
+     * Opens the subscription preference activity
+     * @param v
+     */
+    public void onAdd(View v)
+    {
+    	Intent intent = new Intent(this, SelectionActivity.class);
+    	startActivityForResult(intent, 0);
+    }
+    
+	public void onSearch(View v)
     {
     	Toast.makeText(this, "search", Toast.LENGTH_SHORT).show();
-    }
-    
-    public void onHome (View v)
-    {
-    	Toast.makeText(this, "home", Toast.LENGTH_SHORT).show();
     }
 
 }

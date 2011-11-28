@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" 
+    android:key="using_categories_in_root_screen"
+    android:title="@string/prefTitle"
+    android:summary="@string/prefSummary">
+    
+    <PreferenceCategory 
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:key="subscriptionoptions_topic_newstopic"
+        android:title="News Topic"
+        android:summary="">
+        
+        <CheckBoxPreference
+            android:key="subscriptionoptions_usmarkets"
+            android:title="U.S Markets"/>
+        
+        <CheckBoxPreference
+            android:key="subscriptionoptions_mostpopular"
+            android:title="Most Popular"/>
+        
+        <CheckBoxPreference
+            android:key="subscriptionoptions_investingstrategies"
+            android:title="Investing Strategies"/>
+        
+        <CheckBoxPreference
+            android:key="subscriptionoptions_mortgages"
+            android:title="Mortgages"/>
+                
+        <CheckBoxPreference
+            android:key="subscriptionoptions_taxes"
+            android:title="Taxes"/>
+        
+    </PreferenceCategory>
+    
+    <PreferenceCategory 
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:key="subscriptionoptions_topic_basicmaterials"
+        android:title="Basic Materials"
+        android:summary="">
+        
+        <CheckBoxPreference
+            android:key="subscriptionoptions_OilGasRefiningMarketing"
+            android:title="Oil and Gas Refining"/>
+        
+        <CheckBoxPreference
+            android:key="subscriptionoptions_gold"
+            android:title="Gold"/>
+        
+        <CheckBoxPreference
+            android:key="subscriptionoptions_silver"
+            android:title="Silver"/>
+        
+        <CheckBoxPreference
+            android:key="subscriptionoptions_SteelIron"
+            android:title="Steel and Iron"/>
+                
+        <CheckBoxPreference
+            android:key="subscriptionoptions_Synthetics"
+            android:title="Synthetics"/>
+        
+    </PreferenceCategory>
+    
+    
+    <PreferenceCategory 
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:key="subscriptionoptions_topic_financial"
+        android:title="Financial"
+        android:summary="">
+        
+        <CheckBoxPreference
+            android:key="subscriptionoptions_AssetManagements"
+            android:title="Asset Management"/>
+        
+        <CheckBoxPreference
+            android:key="subscriptionoptions_RealEstateDevelopment"
+            android:title="Real Estate Development"/>
+        
+        <CheckBoxPreference
+            android:key="subscriptionoptions_CreditServices"
+            android:title="Credit Services"/>
+        
+        <CheckBoxPreference
+            android:key="subscriptionoptions_LifeInsurance"
+            android:title="Life Insurance"/>
+                
+        <CheckBoxPreference
+            android:key="subscriptionoptions_SavingsLoans"
+            android:title="Savings and Loans"/>
+        
+    </PreferenceCategory>
+
+            
+    <PreferenceCategory 
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:key="subscriptionoptions_topic_healthcare"
+        android:title="Healthcare"
+        android:summary="">
+        
+        <CheckBoxPreference
+            android:key="subscriptionoptions_HealthcarePlans"
+            android:title="Health Care Plans"/>
+        
+        <CheckBoxPreference
+            android:key="subscriptionoptions_Hospitals"
+            android:title="Hospitals"/>
+        
+        <CheckBoxPreference
+            android:key="subscriptionoptions_MedicalInstrumentsSupplies"
+            android:title="Medical Instruments and Supplies"/>
+        
+    </PreferenceCategory>
+        
+            
+    <PreferenceCategory 
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:key="subscriptionoptions_topic_technology"
+        android:title="Technology"
+        android:summary="">
+        
+        <CheckBoxPreference
+            android:key="subscriptionoptions_ApplicationSoftware"
+            android:title="Application Software"/>
+        
+        <CheckBoxPreference
+            android:key="subscriptionoptions_HealthcareInformationServices"
+            android:title="Healthcare Information Services"/>
+        
+        <CheckBoxPreference
+            android:key="subscriptionoptions_InternetSoftwareServices"
+            android:title="Internet Software Services"/>
+        
+        <CheckBoxPreference
+            android:key="subscriptionoptions_WirelessCommunications"
+            android:title="Wireless Communications"/>
+        
+    </PreferenceCategory>
+        
+        
+</PreferenceScreen>        

@@ -55,27 +55,14 @@
             android:gravity="left"
             android:orientation="horizontal" >
 
-            <ImageButton
-                style="@style/TitleBarOperation"
+            <TextView
                 android:layout_gravity="center"
                 android:layout_marginBottom="4dip"
                 android:layout_marginLeft="4dip"
                 android:layout_marginRight="5dip"
-                android:layout_marginTop="5dip"
-                android:background="@drawable/home_bg"
-                android:paddingBottom="3dip"
-                android:onClick="onHome"
-                android:src="@drawable/home_def" />
-
-            <ImageView
-                android:layout_width="1px"
-                android:layout_height="fill_parent"
-                android:layout_marginRight="5dip"
-                android:background="@drawable/separator" />
-
-            <TextView
+                android:layout_marginTop="6dip"
                 style="@style/TitleBarText"
-                android:paddingLeft="8dip"
+                android:paddingLeft="4dip"
                 android:text="@string/app_name" />
         </LinearLayout>
 
@@ -86,6 +73,16 @@
             android:layout_gravity="right"
             android:gravity="right"
             android:orientation="horizontal" >
+
+            <ImageButton
+                style="@style/TitleBarOperation"
+                android:layout_marginBottom="4dip"
+                android:layout_marginLeft="5dip"
+                android:layout_marginRight="5dip"
+                android:layout_marginTop="6dip"
+                android:background="@null"
+                android:onClick="onRefresh"
+                android:src="@drawable/cycle_click" />
 
             <ImageView
                 android:layout_width="1px"
@@ -101,8 +98,8 @@
                 android:layout_marginRight="5dip"
                 android:layout_marginTop="6dip"
                 android:background="@null"
-                android:onClick="onEnter"
-                android:src="@drawable/about_click" />
+                android:onClick="onAdd"
+                android:src="@drawable/plus_click" />
 
             <ImageView
                 android:layout_width="1px"
@@ -116,9 +113,9 @@
                 android:layout_marginBottom="4dip"
                 android:layout_marginRight="5dip"
                 android:layout_marginTop="6dip"
-                android:background="@drawable/home_bg"
+                android:background="@null"
                 android:onClick="onSearch"
-                android:src="@drawable/search" />
+                android:src="@drawable/search_click" />
         </LinearLayout>
     </LinearLayout>
     <!-- End of the actionbar -->

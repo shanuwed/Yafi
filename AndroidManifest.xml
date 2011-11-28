@@ -5,6 +5,7 @@
     android:versionName="1.0" >
 
     <uses-sdk android:minSdkVersion="7" />
+    <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
         android:theme="@style/Theme.D1"
@@ -19,6 +20,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".TabActivity"></activity>
+        <activity android:name=".SelectionActivity"></activity>
     </application>
 
 </manifest>
