@@ -130,7 +130,7 @@ public class DBAdapter {
      * @return Cursor positioned to matching item
      * @throws SQLException
      */
-    public Cursor fetchItemByTopicId(long topicId) throws SQLException {
+    public Cursor fetchItemsByTopicId(long topicId) throws SQLException {
     	
         Cursor cursor =
 
@@ -160,7 +160,7 @@ public class DBAdapter {
      * @return Cursor positioned to matching item, if found
      * @throws SQLException if item could not be found/retrieved
      */
-    public Cursor fetchItemByRowId(long rowId) throws SQLException {
+    public Cursor fetchItemsByRowId(long rowId) throws SQLException {
 
         Cursor cursor =
 

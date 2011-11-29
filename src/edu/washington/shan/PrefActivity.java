@@ -10,7 +10,7 @@ import android.preference.PreferenceActivity;
  * @author shan@uw.edu
  *
  */
-public class SelectionActivity extends PreferenceActivity {
+public class PrefActivity extends PreferenceActivity {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState){

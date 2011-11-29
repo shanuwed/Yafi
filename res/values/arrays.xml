@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    <!-- These are the keys used in CheckBoxPreference in subscriptionoptions.xml-->
+    <string-array name="subscriptionoptions_keys">
+       <item>subscriptionoptions_usmarkets</item>
+       <item>subscriptionoptions_mostpopular</item>
+       <item>subscriptionoptions_investingstrategies</item>
+       <item>subscriptionoptions_mortgages</item>
+       <item>subscriptionoptions_taxes</item>
+       <item>subscriptionoptions_OilGasRefiningMarketing</item>
+       <item>subscriptionoptions_gold</item>
+       <item>subscriptionoptions_silver</item>
+       <item>subscriptionoptions_SteelIron</item>
+       <item>subscriptionoptions_Synthetics</item>
+       <item>subscriptionoptions_AssetManagements</item>
+       <item>subscriptionoptions_RealEstateDevelopment</item>
+       <item>subscriptionoptions_CreditServices</item>
+       <item>subscriptionoptions_LifeInsurance</item>
+       <item>subscriptionoptions_SavingsLoans</item>
+       <item>subscriptionoptions_HealthcarePlans</item>
+       <item>subscriptionoptions_Hospitals</item>
+       <item>subscriptionoptions_MedicalInstrumentsSupplies</item>
+       <item>subscriptionoptions_ApplicationSoftware</item>
+       <item>subscriptionoptions_HealthcareInformationServices</item>
+       <item>subscriptionoptions_InternetSoftwareServices</item>
+       <item>subscriptionoptions_WirelessCommunications</item>
+    </string-array>
+    
+    <string-array name="subscriptionoptions_titles">
+        <item>U.S Markets;usmarkets</item>
+        <item>Most Popular;mostpopular</item>
+        <item>Investing Strategies;investingstrategies</item>
+        <item>Mortgages;mortgages</item>
+        <item>Taxes;taxes</item>
+        <item>Oil &amp; Gas Refining;OilGasRefiningMarketing</item>
+        <item>Gold;Gold</item>
+        <item>Silver;Silver</item>
+        <item>Steel and Iron;SteelIron</item>
+        <item>Synthetics;Synthetics</item>
+        <item>Asset Management;AssetManagement</item>
+        <item>Real Estate Development;RealEstateDevelopment</item>
+        <item>Credit Services;CreditServices</item>
+        <item>Life Insurance;LifeInsurance</item>
+        <item>Savings and Loans;SavingsLoans</item>
+        <item>Health Care Plans;HealthCarePlans</item>
+        <item>Hospitals;Hospitals</item>
+        <item>Medical Instruments and Supplies;MedicalInstrumentsSupplies</item>
+        <item>Application Software;ApplicationSoftware</item>
+        <item>Healthcare Information Services;HealthcareInformationServices</item>
+        <item>Internet Software Services;InternetSoftwareServices</item>
+        <item>Wireless Communication;WirelessCommunications</item>
+    </string-array>
+
+    <string-array name="subscriptionoptions_topics">
+        <item>News Topic</item>
+        <item>Basic Materials</item>
+        <item>Financial</item>
+        <item>Healthcare</item>
+        <item>Technology</item>
+    </string-array>
+    
+</resources>

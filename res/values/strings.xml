@@ -7,44 +7,5 @@
     <string name="app_name">Yafi</string>
     <string name="no_data">No data</string>
     <string name="rss_base_url">http://finance.yahoo.com/rss/</string>
-    <string-array name="topics">
-        <item>News Topic</item>
-        <item>Basic Materials</item>
-        <item>Financial</item>
-        <item>Healthcare</item>
-        <item>Technology</item>
-    </string-array>
-    <string-array name="newstopic">
-        <item>U.S Markets;usmarkets</item>
-        <item>Most Popular;mostpopular</item>
-        <item>Investing Strategies;investingstrategies</item>
-        <item>Mortgages;mortgages</item>
-        <item>Taxes;taxes</item>
-    </string-array>
-    <string-array name="basicmaterials">
-        <item>Oil &amp; Gas Refining;OilGasRefiningMarketing</item>
-        <item>Gold;Gold</item>
-        <item>Silver;Silver</item>
-        <item>Steel and Iron;SteelIron</item>
-        <item>Synthetics;Synthetics</item>
-    </string-array>
-    <string-array name="financial">
-        <item>Asset Management;AssetManagement</item>
-        <item>Real Estate Development;RealEstateDevelopment</item>
-        <item>Credit Services;CreditServices</item>
-        <item>Life Insurance;LifeInsurance</item>
-        <item>Savings and Loans;SavingsLoans</item>
-    </string-array>
-    <string-array name="healthcare">
-        <item>Health Care Plans;HealthCarePlans</item>
-        <item>Hospitals;Hospitals</item>
-        <item>Medical Instruments and Supplies;MedicalInstrumentsSupplies</item>
-    </string-array>
-    <string-array name="technology">
-        <item>Application Software;ApplicationSoftware</item>
-        <item>Healthcare Information Services;HealthcareInformationServices</item>
-        <item>Internet Software Services;InternetSoftwareServices</item>
-        <item>Wireless Communication;WirelessCommunications</item>
-    </string-array>
 
 </resources>

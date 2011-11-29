@@ -25,30 +25,39 @@ import org.mcsoxford.rss.RSSItem;
 import org.mcsoxford.rss.RSSReader;
 import org.mcsoxford.rss.RSSReaderException;
 
-
+/**
+ * @author shan@uw.edu
+ *
+ */
 public class SubscriptionManager {
 	
-	private static final String TAG="TabActivity";
-	private static final String baseUri = "http://finance.yahoo.com/rss/";
+	private static final String TAG="SubscriptionManager";
     private DBAdapter mDbAdapter;
 	
-    public SubscriptionManager(Context context) {
+    public SubscriptionManager(Context context) 
+    {
     	mDbAdapter = new DBAdapter(context);
     }
     
-    public boolean getRssFeed(String uri){
+    public boolean getRssFeed(String url, int topicId)
+    {
+    	assert topicId >=0;
+    	
         boolean ret = false;
         mDbAdapter.open();
-        ret = getRssFeedPrivate(uri);
+        ret = getRssFeedPrivate(url, topicId);
         mDbAdapter.close();
         return ret;
     }
     
-    private boolean getRssFeedPrivate(String uri){
+    private boolean getRssFeedPrivate(String url, int topicId)
+    {
+		Log.e(TAG, "Requesting RSS feed for:" + url + " and topicId:" + topicId);
+		
     	boolean ret = false;
         try {
 	        RSSReader reader = new RSSReader();
-			RSSFeed feed = reader.load(uri); // may throw RSSReaderException
+			RSSFeed feed = reader.load(url); // may throw RSSReaderException
 			List<RSSItem> rssItems = feed.getItems();
 			for(RSSItem rssItem: rssItems){
     			java.util.Date timestamp = rssItem.getPubDate();
@@ -57,11 +66,13 @@ public class SubscriptionManager {
     			mDbAdapter.createItem(rssItem.getTitle(), 
 					rssItem.getLink().toString(), 
 					time, 
-					0, // topicId (TODO fix it) 
+					topicId, 
 					0);// status (TODO not in use)
 			}
 			ret = true;
 		} catch (RSSReaderException e) {
+			Log.e("Failed to read RSS feed:", e.toString());
+		} catch (java.lang.NullPointerException e){
 			Log.e("Failed to read RSS feed:", e.toString());
 		}
 		return ret;
