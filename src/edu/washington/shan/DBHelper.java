@@ -20,7 +20,7 @@ public class DBHelper extends SQLiteOpenHelper {
 		DBConstants.KEY_ID + " integer primary key autoincrement, " +
 		DBConstants.TITLE_NAME + " text not null, " +
 		DBConstants.URL_NAME + " text not null, " +
-		DBConstants.TIME_NAME + " text not null, " +
+		DBConstants.TIME_NAME + " integer, " +
 		DBConstants.TOPICID_NAME + " integer, " +
 		DBConstants.STATUS_NAME + " integer);";
 			

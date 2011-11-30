@@ -1,11 +1,7 @@
 package edu.washington.shan;
 
-import android.app.Activity;
 import android.app.TabActivity;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.res.Resources;
@@ -15,52 +11,53 @@ import android.os.Message;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TabHost;
 import android.widget.Toast;
 
 public class MainActivity extends TabActivity {
 	
     private static final String TAG="MainActivity";
-	private static final int ACTIVITY_REFRESH = 0;
 	private static final int ACTIVITY_PREF = 1;
 	private static final int ACTIVITY_SEARCH = 2;
-	private Resources resources;
-    private PrefKeyManager prefKeyManager;
-    
+	private Resources mResources;
+    private PrefKeyManager mPrefKeyManager;
     private Handler mHandler;
     private Thread mWorkerThread;
+    private ProgressBar mProgressBar;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) 
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         
-        resources = getResources();
-        prefKeyManager = PrefKeyManager.getInstance();
-        prefKeyManager.initialize(this); // be sure to initialize before using it
+        mProgressBar = (ProgressBar)findViewById(R.id.progressBar1);
+        mHandler = new Handler(mCallback);
+        mResources = getResources();
+        mPrefKeyManager = PrefKeyManager.getInstance();
+        mPrefKeyManager.initialize(this); // be sure to initialize before using it
         
         InitializePrefs();
         addTabsBasedOnPreferences();
-        
-        mHandler = new Handler(mCallback);
-
     }
     
+    /**
+     * Force to create a pref: <boolean name="subscriptionoptions_usmarkets" value="true" />
+     */
     private void InitializePrefs()
     {
-        // 
         boolean prefValue = true;
-        String[] prefList = getResources().getStringArray(R.array.subscriptionoptions_keys);
+        String[] prefList = mResources.getStringArray(R.array.subscriptionoptions_keys);
         String prefKey = prefList[0];
         
-        // Can you actually create a pref file?
-        String prefFileName = "edu.washington.shan_preferences";
-        SharedPreferences myPrefs = getSharedPreferences(prefFileName, MODE_PRIVATE);
+        SharedPreferences sharedPref = getSharedPreferences(
+        		mResources.getString(R.string.pref_filename), 
+        		MODE_PRIVATE);
         
-        // Force to create a pref: <boolean name="subscriptionoptions_usmarkets" value="true" />
-        Editor prefEditor = myPrefs.edit();
-        prefEditor.putBoolean(prefKey, prefValue);
-        prefEditor.commit();
+        Editor editor = sharedPref.edit();
+        editor.putBoolean(prefKey, prefValue);
+        editor.commit();
     }
     
     /* (non-Javadoc)
@@ -76,13 +73,12 @@ public class MainActivity extends TabActivity {
 		
 		if(requestCode == ACTIVITY_PREF)
 		{
-	        TabHost tabHost = getTabHost();
-	        tabHost.clearAllTabs();
-	        
 	        // make sure there's at least one tab or it will throw.
 	        // Force the first preference to be on all the time.
 	        InitializePrefs(); 
 	        
+	        TabHost tabHost = getTabHost();
+	        tabHost.clearAllTabs();
 	        addTabsBasedOnPreferences();
 		}
 		else if(requestCode == ACTIVITY_SEARCH)
@@ -92,8 +88,9 @@ public class MainActivity extends TabActivity {
 	}
 
     /**
-     * Add or remove tabs according to the subscription
+     * Add tabs according to the subscription
      * preferences set by the user.
+     * Remove all tabs before calling this.
      */
 	private void addTabsBasedOnPreferences() 
     {
@@ -103,7 +100,7 @@ public class MainActivity extends TabActivity {
 			PreferenceManager.getDefaultSharedPreferences(this);
 		
 		// Get the keys from the resource to check each preference
-		String[] optionKeys = resources.getStringArray(R.array.subscriptionoptions_keys);
+		String[] optionKeys = mResources.getStringArray(R.array.subscriptionoptions_keys);
 		for(String key : optionKeys)
 		{
 			String[] tokens = key.split("_");
@@ -112,50 +109,61 @@ public class MainActivity extends TabActivity {
 			// Is the preference selected?
 			if(prefs.getBoolean(key, defValue))
 			{
-				addNewTab(key, tokens[1], Constants.RSS_BASE_URI + tokens[1]);
+				addNewTab(key, tokens[1]);
 			}
 		}
 	}
 
-	private void addNewTab(String key, String title, String rssUri) 
+	private void addNewTab(String key, String title) 
 	{
 		try
 		{
+			// Create an intent and stuff it with a key.
+			// we will need the key to figure out topicId to 
+			// query the db in RssActivity.
 			Intent intent= new Intent(this, RssActivity.class);
-			intent.putExtra(Constants.KEY_PREFKEY, key);
-			intent.putExtra(Constants.KEY_URL, rssUri);
+			intent.putExtra(Constants.KEY_PREFKEY, key); 
 			
-	        TabHost tabHost = getTabHost();  // The activity TabHost
-	        TabHost.TabSpec spec;  // Resusable TabSpec for each tab
+	        TabHost tabHost = getTabHost();
+	        TabHost.TabSpec spec;
 	
 	        // Initialize a TabSpec for each tab and add it to the TabHost
 	        spec = tabHost.newTabSpec(title).setIndicator(title,
-	                          resources.getDrawable(R.drawable.ic_tab_lang))
+	                          mResources.getDrawable(R.drawable.ic_tab_lang))
 	                      .setContent(intent);
 	        tabHost.addTab(spec);
 		}
 		catch(java.lang.NullPointerException e){}
 	}
 
-	private Handler.Callback mCallback = new Handler.Callback() {
-		
+	/**
+	 * This is the callback for the background to thread to call
+	 * when it's done.
+	 */
+	private Handler.Callback mCallback = new Handler.Callback() 
+	{
 		@Override
 		public boolean handleMessage(Message msg) {
+			
+			// The background thread returned.
+			// Stop the progressbar.
+			mProgressBar.setVisibility(ProgressBar.GONE);
+			
 			Bundle bundle = msg.getData();
 			if(bundle != null)
 			{
-				boolean tmp = bundle.getBoolean(Constants.KEY_STATUS);
-				if(tmp)
+				boolean result = bundle.getBoolean(Constants.KEY_STATUS);
+				if(result)
 				{
-					Log.v("Handler.Callback", "RSS retrival succeeded");
+					Log.v(TAG, "RSS retrival succeeded");
 					
-			    	// 2) Send "refresh" message to the tab
+			    	// Send "refresh" message to the tab
 			    	Intent intent = new Intent(Constants.REFRESH_ACTION);
 			    	sendBroadcast(intent);
 				}
 				else
 				{
-					Log.v("Handler.Callback", "RSS retrival failed");
+					Log.v(TAG, "RSS retrival failed");
 					Toast.makeText(getApplicationContext(), 
 							"RSS retrival failed.", 
 							Toast.LENGTH_SHORT).show();
@@ -171,12 +179,17 @@ public class MainActivity extends TabActivity {
     
     /**
      * Refreshes RSS feed
+     * @param v
      */
     public void onRefresh(View v)
     {
 		Log.v(TAG, "onRefresh");
 		
-    	// 1) Figure out the active tab
+		// Set the progress bar visibility
+		// Start the progressbar.
+		mProgressBar.setVisibility(ProgressBar.VISIBLE);
+		
+    	// Figure out the active tab
         TabHost tabHost = getTabHost();  // The activity TabHost
         String currentTabTag = tabHost.getCurrentTabTag(); // like "usmarkets"
         

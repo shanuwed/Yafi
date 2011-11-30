@@ -80,7 +80,7 @@ public class DBAdapter {
      * @param status
      * @return rowId or -1 if failed
      */
-    public long createItem(String title, String url, String time, int topicId, int status) {
+    public long createItem(String title, String url, long time, int topicId, int status) {
         ContentValues initialValues = new ContentValues();
         initialValues.put(DBConstants.TITLE_NAME, title);
         initialValues.put(DBConstants.URL_NAME, url);
@@ -121,6 +121,31 @@ public class DBAdapter {
     		null, // groupBy
     		null, // having
     		null);// orderBy
+    }
+    
+    /**
+     * Return a Cursor positioned at the item that matches the given title
+     * 
+     * @param title
+     * @return
+     * @throws SQLException
+     */
+    public Cursor fetchItemsByTitle(String title) throws SQLException {
+    	
+        Cursor cursor =
+
+            mDb.query(true, DBConstants.TABLE_NAME, new String[] {
+            		DBConstants.KEY_ID}, 
+                    DBConstants.TITLE_NAME + "='" + title + "'", 
+                    null,  // selection
+                    null,  // selectionArgs
+                    null,  // groupBy
+                    null,  // having
+                    null); // orderBy
+        if (cursor != null) {
+            cursor.moveToFirst();
+        }
+        return cursor;
     }
     
     /**

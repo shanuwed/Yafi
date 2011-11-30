@@ -39,6 +39,15 @@
             android:gravity="right"
             android:orientation="horizontal" >
 
+            <ProgressBar
+                android:id="@+id/progressBar1"
+                style="@android:style/Widget.ProgressBar.Small.Inverse"
+                android:visibility="gone"
+                android:indeterminate="true"
+                android:gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
             <ImageButton
                 style="@style/TitleBarOperation"
                 android:layout_marginBottom="4dip"

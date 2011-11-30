@@ -19,7 +19,7 @@
             android:drawSelectorOnTop="false"/>
         
         <!-- Here is the view to show if the list is emtpy -->
-        <TextView android:id="@+id/empty"
+        <TextView android:id="@android:id/empty"
             android:layout_width="fill_parent" 
             android:layout_height="wrap_content"
             android:text="@string/no_data"/>
