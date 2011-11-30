@@ -10,27 +10,7 @@ http://developer.yahoo.com/finance/industry.html
 Database schema
  title : string
  url : string
- time : string
+ time : int
  topicId : int
  status : int
- 
-RSSItem
- -categories
- -content
- -description
- -link Uri$StringUri
- --authority
- --cachedFsi
- --cachedSsi
- --fragment
- --host
- --path
- --port
- --query
- --scheme
- --ssp
- --uriString (*)
- --userInfo
- 
- http://us.rd.yahoo.com/finance/external/trsa/rss/SIG=141mget0u/*http://seekingalpha.com/article/310269-nanometrics-ceo-discusses-at-citi-8th-annual-us-small-mid-cap-conference-call-transcript?source=yahoo
 
