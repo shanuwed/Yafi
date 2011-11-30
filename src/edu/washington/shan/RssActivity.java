@@ -9,8 +9,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 
 /**
@@ -60,6 +63,26 @@ public class RssActivity extends ListActivity {
         super.onResume();
     }
     
+	@Override
+	protected void onListItemClick(ListView l, View v, int position, long id) {
+		super.onListItemClick(l, v, position, id);
+		
+		// Using the id get the URL from the db
+		Cursor cursor = mDbAdapter.fetchItemsByRowId(id);
+		if(cursor != null)
+		{
+			int colIndex = cursor.getColumnIndex(DBConstants.URL_NAME);
+			String uri = cursor.getString(colIndex);
+			if(uri != null && uri.length() > 0)
+			{
+				// Intent to open a browser
+				Intent i = new Intent(Intent.ACTION_VIEW);
+				i.setData(Uri.parse(uri));
+				startActivity(i);
+			}
+		}
+	}
+
     private void fillData() 
     {
     	// For the given key get the int value and use that
