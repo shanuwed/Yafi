@@ -10,11 +10,11 @@ import android.preference.PreferenceActivity;
  * @author shan@uw.edu
  *
  */
-public class PrefActivity extends PreferenceActivity {
+public class SettingsPrefActivity extends PreferenceActivity {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
-		addPreferencesFromResource(R.xml.subscriptionoptions);
+		addPreferencesFromResource(R.xml.settings);
 	}
 }

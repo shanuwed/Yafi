@@ -1,6 +1,8 @@
 package edu.washington.shan;
 
+import android.app.AlertDialog;
 import android.app.TabActivity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -10,6 +12,9 @@ import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TabHost;
@@ -18,6 +23,7 @@ import android.widget.Toast;
 public class MainActivity extends TabActivity {
 	
     private static final String TAG="MainActivity";
+	private static final int ACTIVITY_SETTINGS = 0;
 	private static final int ACTIVITY_PREF = 1;
 	private static final int ACTIVITY_SEARCH = 2;
 	private Resources mResources;
@@ -42,7 +48,49 @@ public class MainActivity extends TabActivity {
         addTabsBasedOnPreferences();
     }
     
-    /**
+    /* (non-Javadoc)
+	 * @see android.app.Activity#onCreateOptionsMenu(android.view.Menu)
+	 */
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) 
+	{
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.mainmenu, menu);
+		return true;
+	}
+
+	/* (non-Javadoc)
+	 * @see android.app.Activity#onOptionsItemSelected(android.view.MenuItem)
+	 */
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) 
+	{
+		if(item.getItemId() == R.id.mainmenu_settings)
+		{
+			// Launch to SettingsPrefActivity screen
+	    	Intent intent = new Intent(this, SettingsPrefActivity.class);
+	    	startActivityForResult(intent, ACTIVITY_SETTINGS);
+		}
+		else if(item.getItemId() == R.id.mainmenu_help)
+		{
+			// Show the help dialog
+			AlertDialog dialog = new AlertDialog.Builder(this).create();
+			dialog.setTitle("Yafi RSS Reader");
+			dialog.setMessage("Powered by Yahoo! Finance");
+			dialog.setButton(DialogInterface.BUTTON_POSITIVE, "Ok",
+				new DialogInterface.OnClickListener() {
+					
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						// nothing to do 
+					}
+				});
+			dialog.show();
+		}
+		return true;
+	}
+
+	/**
      * Force to create a pref: <boolean name="subscriptionoptions_usmarkets" value="true" />
      */
     private void InitializePrefs()
@@ -71,7 +119,11 @@ public class MainActivity extends TabActivity {
 		Log.v(TAG, "onActivityResult called with requestCode:" + requestCode +
 				" resultCode:" + resultCode);
 		
-		if(requestCode == ACTIVITY_PREF)
+		if(requestCode == ACTIVITY_SETTINGS)
+		{
+			// nothing yet
+		}
+		else if(requestCode == ACTIVITY_PREF)
 		{
 	        // make sure there's at least one tab or it will throw.
 	        // Force the first preference to be on all the time.
@@ -220,7 +272,7 @@ public class MainActivity extends TabActivity {
 		// A workaround is to bring the first tab to the front before switching
 		// to another activity. The first tab will always be there.
         getTabHost().setCurrentTab(0);
-    	Intent intent = new Intent(this, PrefActivity.class);
+    	Intent intent = new Intent(this, SubscriptionPrefActivity.class);
     	startActivityForResult(intent, ACTIVITY_PREF);
     }
     

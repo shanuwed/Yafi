@@ -19,7 +19,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".PrefActivity"></activity>
+        <activity android:name=".SubscriptionPrefActivity"></activity>
         <activity
             android:label="@string/app_name" 
             android:name=".RssActivity">
@@ -30,6 +30,7 @@
             </intent-filter>
             
         </activity>
+        <activity android:name=".SettingsPrefActivity"></activity>
     </application>
 
 </manifest>

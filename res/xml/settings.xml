@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" 
+    android:key="using_categories_in_root_screen"
+    android:title="@string/settingsTitle"
+    android:summary="@string/settingsSummary">
+    
+    <PreferenceCategory 
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:title="RSS Settings"
+        android:summary="">
+        
+	    <CheckBoxPreference
+	        android:key="settings_rss_feed_save"
+	        android:title="Save Policy"
+	        android:summary="Delete RSS feeds older than 30 days" />
+	    
+	    <CheckBoxPreference
+	        android:key="settings_auto_sync"
+	        android:title="Sync"
+	        android:summary="Automatically sync RSS feed" />
+	    
+    </PreferenceCategory>
+    
+</PreferenceScreen>        
