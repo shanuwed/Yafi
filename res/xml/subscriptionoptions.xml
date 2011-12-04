@@ -1,62 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" 
     android:key="using_categories_in_root_screen"
-    android:title="@string/prefTitle"
-    android:summary="@string/prefSummary">
+    android:title="@string/settings_prefscreen_title"
+    android:summary="settings_prefscreen_summary">
     
     <PreferenceCategory 
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:key="subscriptionoptions_topic_newstopic"
-        android:title="News Topic"
-        android:summary="">
+        android:title="@string/title_newstopic">
         
         <CheckBoxPreference
             android:key="subscriptionoptions_usmarkets"
-            android:title="U.S Markets"/>
+            android:title="@string/title_usmarkets" android:enabled="false" android:selectable="false" android:summary="This option is always selected."/>
         
         <CheckBoxPreference
             android:key="subscriptionoptions_mostpopular"
-            android:title="Most Popular"/>
+            android:title="@string/title_mostpopular"/>
         
         <CheckBoxPreference
             android:key="subscriptionoptions_investingstrategies"
-            android:title="Investing Strategies"/>
+            android:title="@string/title_investingstrategies"/>
         
         <CheckBoxPreference
             android:key="subscriptionoptions_mortgages"
-            android:title="Mortgages"/>
+            android:title="@string/title_mortgages"/>
                 
         <CheckBoxPreference
             android:key="subscriptionoptions_taxes"
-            android:title="Taxes"/>
+            android:title="@string/title_taxes"/>
         
     </PreferenceCategory>
     
     <PreferenceCategory 
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:key="subscriptionoptions_topic_basicmaterials"
-        android:title="Basic Materials"
-        android:summary="">
+        android:title="@string/title_basicmaterials">
         
         <CheckBoxPreference
             android:key="subscriptionoptions_OilGasRefiningMarketing"
-            android:title="Oil and Gas Refining"/>
+            android:title="@string/title_OilGasRefiningMarketing"/>
         
         <CheckBoxPreference
             android:key="subscriptionoptions_gold"
-            android:title="Gold"/>
+            android:title="@string/title_gold"/>
         
         <CheckBoxPreference
             android:key="subscriptionoptions_silver"
-            android:title="Silver"/>
+            android:title="@string/title_silver"/>
         
         <CheckBoxPreference
             android:key="subscriptionoptions_SteelIron"
-            android:title="Steel and Iron"/>
+            android:title="@string/title_SteelIron"/>
                 
         <CheckBoxPreference
             android:key="subscriptionoptions_Synthetics"
-            android:title="Synthetics"/>
+            android:title="@string/title_Synthetics"/>
         
     </PreferenceCategory>
     
@@ -64,8 +62,7 @@
     <PreferenceCategory 
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:key="subscriptionoptions_topic_financial"
-        android:title="Financial"
-        android:summary="">
+        android:title="Financial">
         
         <CheckBoxPreference
             android:key="subscriptionoptions_AssetManagements"
@@ -93,8 +90,7 @@
     <PreferenceCategory 
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:key="subscriptionoptions_topic_healthcare"
-        android:title="Healthcare"
-        android:summary="">
+        android:title="Healthcare">
         
         <CheckBoxPreference
             android:key="subscriptionoptions_HealthcarePlans"
@@ -114,8 +110,7 @@
     <PreferenceCategory 
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:key="subscriptionoptions_topic_technology"
-        android:title="Technology"
-        android:summary="">
+        android:title="Technology">
         
         <CheckBoxPreference
             android:key="subscriptionoptions_ApplicationSoftware"

@@ -111,7 +111,7 @@ public class RssActivity extends ListActivity {
     
     /**
      * The message is originated from the Main activity to 
-     * notify that the RSS data retrival is completed.
+     * notify that the RSS data retrieval is completed.
      * As soon as we get the message we update the list.
      */
     protected class RefreshBroadcastReceiver extends BroadcastReceiver 

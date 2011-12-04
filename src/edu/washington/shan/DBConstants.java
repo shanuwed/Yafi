@@ -7,7 +7,7 @@ public class DBConstants {
 	public static final String TABLE_NAME="rssentries";
 	public static final String TITLE_NAME="title"; // string
 	public static final String URL_NAME="url";     // string
-	public static final String TIME_NAME="time";   // string 
+	public static final String TIME_NAME="time";   // int 
 	public static final String TOPICID_NAME="topicid"; // int
 	public static final String STATUS_NAME="status";   // int
 }

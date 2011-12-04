@@ -2,9 +2,9 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <!-- When selected use grey -->
-    <item android:drawable="@drawable/ic_tab_lang_grey"
+    <item android:drawable="@drawable/rss_active"
         android:state_selected="true" />
     <!-- When not selected, use white -->
-    <item android:drawable="@drawable/ic_tab_lang_white" />
+    <item android:drawable="@drawable/rss_dark" />
 
 </selector>

@@ -27,37 +27,38 @@
        <item>subscriptionoptions_WirelessCommunications</item>
     </string-array>
     
-    <string-array name="subscriptionoptions_titles">
-        <item>U.S Markets;usmarkets</item>
-        <item>Most Popular;mostpopular</item>
-        <item>Investing Strategies;investingstrategies</item>
-        <item>Mortgages;mortgages</item>
-        <item>Taxes;taxes</item>
-        <item>Oil &amp; Gas Refining;OilGasRefiningMarketing</item>
-        <item>Gold;Gold</item>
-        <item>Silver;Silver</item>
-        <item>Steel and Iron;SteelIron</item>
-        <item>Synthetics;Synthetics</item>
-        <item>Asset Management;AssetManagement</item>
-        <item>Real Estate Development;RealEstateDevelopment</item>
-        <item>Credit Services;CreditServices</item>
-        <item>Life Insurance;LifeInsurance</item>
-        <item>Savings and Loans;SavingsLoans</item>
-        <item>Health Care Plans;HealthCarePlans</item>
-        <item>Hospitals;Hospitals</item>
-        <item>Medical Instruments and Supplies;MedicalInstrumentsSupplies</item>
-        <item>Application Software;ApplicationSoftware</item>
-        <item>Healthcare Information Services;HealthcareInformationServices</item>
-        <item>Internet Software Services;InternetSoftwareServices</item>
-        <item>Wireless Communication;WirelessCommunications</item>
-    </string-array>
-
+    <!-- Used as tab and preference titles -->
+    <string-array name="subscriptionoptions_keys_title">
+	    <item>@string/title_usmarkets</item>
+	    <item>@string/title_mostpopular</item>
+	    <item>@string/title_investingstrategies</item>
+	    <item>@string/title_mortgages</item>
+	    <item>@string/title_taxes</item>
+	    <item>@string/title_OilGasRefiningMarketing</item>
+	    <item>@string/title_gold</item>
+	    <item>@string/title_silver</item>
+	    <item>@string/title_SteelIron</item>
+	    <item>@string/title_Synthetics</item>
+	    <item>@string/title_AssetManagements</item>
+	    <item>@string/title_RealEstateDevelopment</item>
+	    <item>@string/title_CreditServices</item>
+	    <item>@string/title_LifeInsurance</item>
+	    <item>@string/title_SavingsLoans</item>
+	    <item>@string/title_HealthcarePlans</item>
+	    <item>@string/title_Hospitals</item>
+	    <item>@string/title_MedicalInstrumentsSupplies</item>
+	    <item>@string/title_ApplicationSoftware</item>
+	    <item>@string/title_HealthcareInformationServices</item>
+	    <item>@string/title_InternetSoftwareServices</item>
+	    <item>@string/title_WirelessCommunications</item>
+	</string-array>
+    
     <string-array name="subscriptionoptions_topics">
-        <item>News Topic</item>
-        <item>Basic Materials</item>
-        <item>Financial</item>
-        <item>Healthcare</item>
-        <item>Technology</item>
-    </string-array>
+        <item>@string/title_newstopic</item>
+        <item>@string/title_basicmaterials</item>
+        <item>@string/title_financial</item>
+        <item>@string/title_healthcare</item>
+        <item>@string/title_technology</item>
+        </string-array>
     
 </resources>

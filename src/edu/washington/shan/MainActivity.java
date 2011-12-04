@@ -75,9 +75,10 @@ public class MainActivity extends TabActivity {
 		{
 			// Show the help dialog
 			AlertDialog dialog = new AlertDialog.Builder(this).create();
-			dialog.setTitle("Yafi RSS Reader");
-			dialog.setMessage("Powered by Yahoo! Finance");
-			dialog.setButton(DialogInterface.BUTTON_POSITIVE, "Ok",
+			dialog.setTitle(mResources.getString(R.string.help_dialog_title));
+			dialog.setMessage(mResources.getString(R.string.help_dialog_msg));
+			dialog.setButton(DialogInterface.BUTTON_POSITIVE, 
+					mResources.getString(R.string.help_dialog_okay),
 				new DialogInterface.OnClickListener() {
 					
 					@Override
@@ -151,22 +152,27 @@ public class MainActivity extends TabActivity {
 		SharedPreferences prefs =
 			PreferenceManager.getDefaultSharedPreferences(this);
 		
+		// Get the labels for tabs
+		String[] tabLabels = mResources.getStringArray(R.array.subscriptionoptions_keys_title);
+		
 		// Get the keys from the resource to check each preference
-		String[] optionKeys = mResources.getStringArray(R.array.subscriptionoptions_keys);
-		for(String key : optionKeys)
+		String[] tabKeys = mResources.getStringArray(R.array.subscriptionoptions_keys);
+		
+		for(int index=0; index < tabKeys.length; index++)
 		{
+			String key = tabKeys[index];
 			String[] tokens = key.split("_");
 			// assert keyParts.length == 2
 			
 			// Is the preference selected?
 			if(prefs.getBoolean(key, defValue))
 			{
-				addNewTab(key, tokens[1]);
+				addNewTab(key, tokens[1], tabLabels[index]);
 			}
 		}
 	}
 
-	private void addNewTab(String key, String title) 
+	private void addNewTab(String key, String tag, String label) 
 	{
 		try
 		{
@@ -180,7 +186,7 @@ public class MainActivity extends TabActivity {
 	        TabHost.TabSpec spec;
 	
 	        // Initialize a TabSpec for each tab and add it to the TabHost
-	        spec = tabHost.newTabSpec(title).setIndicator(title,
+	        spec = tabHost.newTabSpec(tag).setIndicator(label,
 	                          mResources.getDrawable(R.drawable.ic_tab_lang))
 	                      .setContent(intent);
 	        tabHost.addTab(spec);
@@ -207,7 +213,7 @@ public class MainActivity extends TabActivity {
 				boolean result = bundle.getBoolean(Constants.KEY_STATUS);
 				if(result)
 				{
-					Log.v(TAG, "RSS retrival succeeded");
+					Log.v(TAG, "RSS retrieval succeeded");
 					
 			    	// Send "refresh" message to the tab
 			    	Intent intent = new Intent(Constants.REFRESH_ACTION);
@@ -215,9 +221,9 @@ public class MainActivity extends TabActivity {
 				}
 				else
 				{
-					Log.v(TAG, "RSS retrival failed");
+					Log.v(TAG, "RSS retrieval failed");
 					Toast.makeText(getApplicationContext(), 
-							"RSS retrival failed.", 
+							mResources.getString(R.string.rss_retrieval_failed), 
 							Toast.LENGTH_SHORT).show();
 				}
 			}

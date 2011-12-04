@@ -53,7 +53,7 @@ public class SubscriptionManager {
     			//String time = Long.toString(timeInMillisec);
     			
     			// Does the item already exist?
-    			// TODO: we might be able to further constraint by topicId
+    			// TODO: query can be further constrained by topicId
     			Cursor cursor = mDbAdapter.fetchItemsByTitle(sqlTitle);
     			if(cursor.getCount() == 0)
     			{

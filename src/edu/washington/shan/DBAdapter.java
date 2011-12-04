@@ -24,7 +24,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 /**
- * 
+ * Adapter based on Notepad example from developer.android.com
  */
 public class DBAdapter {
 
@@ -69,8 +69,8 @@ public class DBAdapter {
 
 
     /**
-     * Create a new item using the title and body provided. If the note is
-     * successfully created return the new rowId for that note, otherwise return
+     * Create a new item using the title and body provided. If the item is
+     * successfully created return the new rowId for that item, otherwise return
      * a -1 to indicate failure.
      * 
      * @param title 
@@ -92,9 +92,9 @@ public class DBAdapter {
     }
 
     /**
-     * Delete the note with the given rowId
+     * Delete the item with the given rowId
      * 
-     * @param rowId id of note to delete
+     * @param rowId id of item to delete
      * @return true if deleted, false otherwise
      */
     public boolean deleteItem(long rowId) {
@@ -116,11 +116,11 @@ public class DBAdapter {
     		DBConstants.TIME_NAME,
     		DBConstants.TOPICID_NAME,
     		DBConstants.STATUS_NAME}, 
-    		null, // selection 
-    		null, // selectionArgs
-    		null, // groupBy
-    		null, // having
-    		null);// orderBy
+    		null, 
+    		null,
+    		null,
+    		null,
+    		null);
     }
     
     /**
@@ -137,11 +137,11 @@ public class DBAdapter {
             mDb.query(true, DBConstants.TABLE_NAME, new String[] {
             		DBConstants.KEY_ID}, 
                     DBConstants.TITLE_NAME + "='" + title + "'", 
-                    null,  // selection
-                    null,  // selectionArgs
-                    null,  // groupBy
-                    null,  // having
-                    null); // orderBy
+                    null,
+                    null,
+                    null,
+                    null,
+                    null);
         if (cursor != null) {
             cursor.moveToFirst();
         }
@@ -159,19 +159,20 @@ public class DBAdapter {
     	
         Cursor cursor =
 
-            mDb.query(true, DBConstants.TABLE_NAME, new String[] {
+            mDb.query(true, // distinct
+            		DBConstants.TABLE_NAME, // table 
+            		new String[] { // columns
             		DBConstants.KEY_ID, 
             		DBConstants.TITLE_NAME,
             		DBConstants.URL_NAME,
             		DBConstants.TIME_NAME,
-            		DBConstants.TOPICID_NAME,
-            		DBConstants.STATUS_NAME}, 
+            		DBConstants.TOPICID_NAME}, 
                     DBConstants.TOPICID_NAME + "=" + topicId, 
-                    null,  // selection
-                    null,  // selectionArgs
-                    null,  // groupBy
-                    null,  // having
-                    null); // orderBy
+                    null,
+                    null,
+                    null,
+                    DBConstants.TIME_NAME + " DESC",
+                    null);
         if (cursor != null) {
             cursor.moveToFirst();
         }
@@ -197,11 +198,11 @@ public class DBAdapter {
             		DBConstants.TOPICID_NAME,
             		DBConstants.STATUS_NAME}, 
                     DBConstants.KEY_ID + "=" + rowId, 
-                    null,  // selection
-                    null,  // selectionArgs
-                    null,  // groupBy
-                    null,  // having
-                    null); // orderBy
+                    null,
+                    null,
+                    null,
+                    null,
+                    null);
         if (cursor != null) {
             cursor.moveToFirst();
         }
