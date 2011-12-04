@@ -35,9 +35,13 @@ public class WorkerThreadRunnable implements Runnable {
 	@Override
 	public void run() {
 		Log.v(TAG, "Requesting RSS feed for:" + mRssUrl);
+		boolean rssResult = false; 
 
     	SubscriptionManager subscription = new SubscriptionManager(mContext);
-    	boolean rssResult = subscription.getRssFeed(mRssUrl, mTopicId);
+    	if(subscription.checkConnection())
+    	{
+    		rssResult = subscription.getRssFeed(mRssUrl, mTopicId);
+    	}
     	informFinish(rssResult);
 	}
 	
