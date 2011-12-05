@@ -1,5 +1,10 @@
 package edu.washington.shan;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
@@ -53,5 +58,42 @@ public class DBHelper extends SQLiteOpenHelper {
 				", which will destroy all old data.");
 		db.execSQL("drop table if exists " + DBConstants.TABLE_NAME);
 		onCreate(db);
+	}
+	
+	/**
+	 * Copies a database file in the assets directory to
+	 * /data/data/<package>/databases
+	 * 
+	 * Files you you keep in the assets directory will be
+	 * included in the package.
+	 */
+	static public boolean importDatabase(Context context)
+	{
+	    boolean result = false;
+	    try
+	    {
+	        // Open local db as the input stream
+	        InputStream inputStream =
+	            context.getAssets().open(DBConstants.DATABASE_NAME);
+	        
+	        // Path to the empty db
+	        String outFilename = DBConstants.DB_PATH + DBConstants.DATABASE_NAME;
+	        
+	        // Open the empty db as the output stream
+	        OutputStream outputStream =
+	            new FileOutputStream(outFilename);
+	            
+	        // Transfer bytes from the inputfile to the outputfile
+	        byte[] buffer = new byte[1024];
+	        int length;
+	        while((length = inputStream.read(buffer)) > 0)
+	            outputStream.write(buffer, 0, length);
+	        result = true;
+	    }
+	    catch(IOException e)
+	    {
+	        Log.e("importDatabase() failed", e.toString());
+	    }    
+	    return result;
 	}
 }

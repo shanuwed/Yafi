@@ -1,6 +1,7 @@
 package edu.washington.shan;
 
 public class DBConstants {
+	public static final String DB_PATH = "/data/data/edu.washington.shan/databases/";
 	public static final String DATABASE_NAME="yafidatabase";
 	public static final int DATABASE_VERSION=1;
 	public static final String KEY_ID="_id";

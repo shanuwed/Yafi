@@ -38,16 +38,18 @@ public class MainActivity extends TabActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         
+        initializeDatabase();
+        
         mProgressBar = (ProgressBar)findViewById(R.id.progressBar1);
         mHandler = new Handler(mCallback);
         mResources = getResources();
         mPrefKeyManager = PrefKeyManager.getInstance();
         mPrefKeyManager.initialize(this); // be sure to initialize before using it
         
-        InitializePrefs();
+        initializePrefs();
         addTabsBasedOnPreferences();
     }
-    
+
     /* (non-Javadoc)
 	 * @see android.app.Activity#onCreateOptionsMenu(android.view.Menu)
 	 */
@@ -92,9 +94,28 @@ public class MainActivity extends TabActivity {
 	}
 
 	/**
+	 * Initializes the database by importing a pre-populated database
+	 * from the assets directory to the database directory.
+	 */
+	private void initializeDatabase() {
+		// Determine if this is the first time running the app
+        SharedPreferences sharedPref = getPreferences(MODE_PRIVATE);
+        if(!sharedPref.getBoolean("initialized", false))
+        {
+        	// Copy the initial database from assets dir to database dir
+        	DBHelper.importDatabase(this);
+        	
+        	// Now set the "initialized" flag
+        	SharedPreferences.Editor editor = sharedPref.edit();
+        	editor.putBoolean("initialized", true);
+        	editor.commit();
+        }
+	}
+    
+	/**
      * Force to create a pref: <boolean name="subscriptionoptions_usmarkets" value="true" />
      */
-    private void InitializePrefs()
+    private void initializePrefs()
     {
         boolean prefValue = true;
         String[] prefList = mResources.getStringArray(R.array.subscriptionoptions_keys);
@@ -128,7 +149,7 @@ public class MainActivity extends TabActivity {
 		{
 	        // make sure there's at least one tab or it will throw.
 	        // Force the first preference to be on all the time.
-	        InitializePrefs(); 
+	        initializePrefs(); 
 	        
 	        TabHost tabHost = getTabHost();
 	        tabHost.clearAllTabs();
