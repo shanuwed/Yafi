@@ -30,7 +30,8 @@
             </intent-filter>
             
         </activity>
-        <activity android:name=".SettingsPrefActivity"></activity>
+        <activity android:name=".SettingsPrefActivity" android:theme="@android:style/Theme"></activity>
+        <activity android:name=".SearchActivity"></activity>
     </application>
 
 </manifest>

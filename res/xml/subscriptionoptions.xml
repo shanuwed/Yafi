@@ -62,27 +62,27 @@
     <PreferenceCategory 
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:key="subscriptionoptions_topic_financial"
-        android:title="Financial">
+        android:title="@string/title_financial">
         
         <CheckBoxPreference
             android:key="subscriptionoptions_AssetManagements"
-            android:title="Asset Management"/>
+            android:title="@string/title_AssetManagements"/>
         
         <CheckBoxPreference
             android:key="subscriptionoptions_RealEstateDevelopment"
-            android:title="Real Estate Development"/>
+            android:title="@string/title_RealEstateDevelopment"/>
         
         <CheckBoxPreference
             android:key="subscriptionoptions_CreditServices"
-            android:title="Credit Services"/>
+            android:title="@string/title_CreditServices"/>
         
         <CheckBoxPreference
             android:key="subscriptionoptions_LifeInsurance"
-            android:title="Life Insurance"/>
+            android:title="@string/title_LifeInsurance"/>
                 
         <CheckBoxPreference
             android:key="subscriptionoptions_SavingsLoans"
-            android:title="Savings and Loans"/>
+            android:title="@string/title_SavingsLoans"/>
         
     </PreferenceCategory>
 
@@ -90,19 +90,19 @@
     <PreferenceCategory 
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:key="subscriptionoptions_topic_healthcare"
-        android:title="Healthcare">
+        android:title="@string/title_healthcare">
         
         <CheckBoxPreference
             android:key="subscriptionoptions_HealthcarePlans"
-            android:title="Health Care Plans"/>
+            android:title="@string/title_HealthcarePlans"/>
         
         <CheckBoxPreference
             android:key="subscriptionoptions_Hospitals"
-            android:title="Hospitals"/>
+            android:title="@string/title_Hospitals"/>
         
         <CheckBoxPreference
             android:key="subscriptionoptions_MedicalInstrumentsSupplies"
-            android:title="Medical Instruments and Supplies"/>
+            android:title="@string/title_MedicalInstrumentsSupplies"/>
         
     </PreferenceCategory>
         
@@ -110,23 +110,23 @@
     <PreferenceCategory 
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:key="subscriptionoptions_topic_technology"
-        android:title="Technology">
+        android:title="@string/title_technology">
         
         <CheckBoxPreference
             android:key="subscriptionoptions_ApplicationSoftware"
-            android:title="Application Software"/>
+            android:title="@string/title_ApplicationSoftware"/>
         
         <CheckBoxPreference
             android:key="subscriptionoptions_HealthcareInformationServices"
-            android:title="Healthcare Information Services"/>
+            android:title="@string/title_HealthcareInformationServices"/>
         
         <CheckBoxPreference
             android:key="subscriptionoptions_InternetSoftwareServices"
-            android:title="Internet Software Services"/>
+            android:title="@string/title_InternetSoftwareServices"/>
         
         <CheckBoxPreference
             android:key="subscriptionoptions_WirelessCommunications"
-            android:title="Wireless Communications"/>
+            android:title="@string/title_WirelessCommunications"/>
         
     </PreferenceCategory>
         

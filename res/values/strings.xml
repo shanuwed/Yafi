@@ -11,6 +11,7 @@
     <string name="settings_prefscreen_summary">Setting Preferences</string>
     <string name="app_name">Yafi</string>
     <string name="no_data">No data</string>
+    <string name="no_search_result">No matching result</string>
     <string name="pref_filename">edu.washington.shan_preferences</string>
     <string name="menu_title_settings">Settings</string>
     <string name="menu_title_help">Help</string>

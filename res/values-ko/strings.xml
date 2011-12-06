@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="help_dialog_okay">확인</string>
+    <string name="rss_retrieval_failed">RSS 검색 실패</string>
+    <string name="prefscreen_title">RSS 구독 환경 설정</string>
+    <string name="prefscreen_summary">RSS 구독 환경 설정</string>
+    <string name="settings_prefscreen_title">환경셜졍</string>
+    <string name="settings_prefscreen_summary">환경셜졍</string>
+    <string name="app_name">야픠</string>
+    <string name="no_data">데이타 없음</string>
+    <string name="no_search_result">결과 없음</string>
+    <string name="menu_title_settings">설졍 </string>
+    <string name="menu_title_help">도움</string>
+    <string name="settings_title">RSS 설졍</string>
+    <string name="settings_saving_policy_title">저장 </string>
+    <string name="settings_saving_policy_summary">30 일이지난 피드를 지우기</string>
+    <string name="settings_sync_title">동기화</string>
+    <string name="settings_sync_summary">RSS 피드를 자동으로 동기화 하기</string>
+</resources>

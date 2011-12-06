@@ -311,6 +311,8 @@ public class MainActivity extends TabActivity {
     {
 		Log.v(TAG, "onSearch");
     	Toast.makeText(this, "search", Toast.LENGTH_SHORT).show();
+    	//Intent intent = new Intent(this, SearchActivity.class);
+    	//startActivityForResult(intent, ACTIVITY_SEARCH);
     }
 
 }
