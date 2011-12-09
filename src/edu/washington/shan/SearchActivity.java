@@ -15,13 +15,13 @@ import android.widget.SimpleCursorAdapter;
 
 /**
  * @author shan@uw.edu
- *
+ * Search functionality is not fully implemented
  */
 public class SearchActivity extends ListActivity {
 
 	private static final String TAG="SearchActivity";
-    private DBAdapter mDbAdapter;
-    private Cursor mCursor;
+    //private DBAdapter mDbAdapter;
+    //private Cursor mCursor;
     
 	public void onCreate(Bundle savedInstanceState)
 	{
@@ -29,8 +29,8 @@ public class SearchActivity extends ListActivity {
 		setContentView(R.layout.search);
 		
         // Immediately go to the database and query the items to show
-        mDbAdapter = new DBAdapter(this);
-        mDbAdapter.open();
+        //mDbAdapter = new DBAdapter(this);
+        //mDbAdapter.open();
     }
 	
 	/**

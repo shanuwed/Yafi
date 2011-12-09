@@ -232,17 +232,19 @@ public class MainActivity extends TabActivity {
 			if(bundle != null)
 			{
 				boolean result = bundle.getBoolean(Constants.KEY_STATUS);
+				int topicId = bundle.getInt(Constants.KEY_TOPICID);
 				if(result)
 				{
-					Log.v(TAG, "RSS retrieval succeeded");
+					Log.v(TAG, "RSS retrieval succeeded for topicId:" + topicId);
 					
 			    	// Send "refresh" message to the tab
 			    	Intent intent = new Intent(Constants.REFRESH_ACTION);
+			    	intent.putExtra(Constants.KEY_TOPICID, topicId);
 			    	sendBroadcast(intent);
 				}
 				else
 				{
-					Log.v(TAG, "RSS retrieval failed");
+					Log.v(TAG, "RSS retrieval failed for topicId:" + topicId);
 					Toast.makeText(getApplicationContext(), 
 							mResources.getString(R.string.rss_retrieval_failed), 
 							Toast.LENGTH_SHORT).show();

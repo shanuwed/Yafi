@@ -51,6 +51,7 @@ public class WorkerThreadRunnable implements Runnable {
 		
 		Bundle bundle = new Bundle();
 		bundle.putBoolean(Constants.KEY_STATUS, result); // key, value
+		bundle.putInt(Constants.KEY_TOPICID, mTopicId); // key, value
 		
 		Message msg = mMainThreadHandler.obtainMessage();
 		msg.setData(bundle);

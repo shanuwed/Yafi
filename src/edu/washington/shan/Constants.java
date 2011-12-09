@@ -16,5 +16,5 @@ public class Constants {
 	public static final String KEY_URL = "URL";
 	public static final String KEY_TITLE = "TITLE";
 	public static final String KEY_STATUS = "STATUS";
-
+	public static final String KEY_TOPICID = "TOPICID";
 }

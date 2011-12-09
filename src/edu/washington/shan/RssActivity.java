@@ -25,7 +25,7 @@ public class RssActivity extends ListActivity {
 	private static final String TAG="RssActivity";
     private DBAdapter mDbAdapter;
     private Cursor mCursor;
-    private String mKey = null; // preference key as defined in subscriptionoptions.xml
+    private String mKey = null; // preference key as defined in subscriptionoptions.xml. It may look like subscriptionoptions_mostpopular.
 	private RefreshBroadcastReceiver refreshBroadcastReceiver = new RefreshBroadcastReceiver();
     
 	public void onCreate(Bundle savedInstanceState)
@@ -69,6 +69,7 @@ public class RssActivity extends ListActivity {
 		
 		// Using the id get the URL from the db
 		Cursor cursor = mDbAdapter.fetchItemsByRowId(id);
+		startManagingCursor(cursor);
 		if(cursor != null)
 		{
 			int colIndex = cursor.getColumnIndex(DBConstants.URL_NAME);
@@ -113,6 +114,8 @@ public class RssActivity extends ListActivity {
      * The message is originated from the Main activity to 
      * notify that the RSS data retrieval is completed.
      * As soon as we get the message we update the list.
+     * TODO: when you click on the refresh button and switch 
+     * the tab the original tab won't be receiving this message.
      */
     protected class RefreshBroadcastReceiver extends BroadcastReceiver 
     {
@@ -122,8 +125,27 @@ public class RssActivity extends ListActivity {
 			String action = intent.getAction();
 			if(action.equals(Constants.REFRESH_ACTION))
 			{
-		    	Log.v(TAG, "RefreshBroadcastReceiver for key: " + mKey);
-		    	fillData();
+				// Retrieve the topic Id and see if it's valid
+				int topicId = intent.getIntExtra(Constants.KEY_TOPICID, -1);
+				if(-1 != topicId)
+				{
+					// Get the topic and see if it's valid
+					String topic = PrefKeyManager.getInstance().ValueToKey(topicId);
+					if(topic.length() > 0)
+					{
+						// Is this broadcast message intended for this activity?
+						if(0 == topic.compareTo(mKey))
+						{
+					    	Log.v(TAG, "RefreshBroadcastReceiver for key: " + mKey);
+					    	fillData();
+						}
+						else
+						{
+							// message is intended for other Rss activity...
+							// TODO: save it for later retrieval
+						}
+					}
+				}
 			}
 		}
     }

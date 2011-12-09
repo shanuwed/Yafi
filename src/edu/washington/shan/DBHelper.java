@@ -1,5 +1,6 @@
 package edu.washington.shan;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -76,7 +77,12 @@ public class DBHelper extends SQLiteOpenHelper {
 	        InputStream inputStream =
 	            context.getAssets().open(DBConstants.DATABASE_NAME);
 	        
-	        // Path to the empty db
+	        // Path to db; create if it doesn't exist already
+	        File dbPath = new File(DBConstants.DB_PATH);
+	        if(!dbPath.exists())
+	        	dbPath.mkdir();
+	        
+	        // Full path to db
 	        String outFilename = DBConstants.DB_PATH + DBConstants.DATABASE_NAME;
 	        
 	        // Open the empty db as the output stream

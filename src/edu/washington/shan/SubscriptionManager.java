@@ -10,6 +10,7 @@ import org.mcsoxford.rss.RSSItem;
 import org.mcsoxford.rss.RSSReader;
 import org.mcsoxford.rss.RSSReaderException;
 
+import android.app.Activity;
 import android.content.Context;
 import android.database.Cursor;
 import android.util.Log;
@@ -22,10 +23,12 @@ public class SubscriptionManager {
 	
 	private static final String TAG="SubscriptionManager";
     private DBAdapter mDbAdapter;
+    private Context mContext;
 	
     public SubscriptionManager(Context context) 
     {
-    	mDbAdapter = new DBAdapter(context);
+    	mContext = context;
+    	mDbAdapter = new DBAdapter(mContext);
     }
     
     /**
@@ -97,6 +100,7 @@ public class SubscriptionManager {
     			// Does the item already exist?
     			// TODO: query can be further constrained by topicId
     			Cursor cursor = mDbAdapter.fetchItemsByTitle(sqlTitle);
+    			((Activity)mContext).startManagingCursor(cursor);
     			if(cursor.getCount() == 0)
     			{
 	    			mDbAdapter.createItem(title, 

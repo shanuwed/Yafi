@@ -75,7 +75,7 @@ public class PrefKeyManager
 	public String ValueToKey(int value)
 	{
 		String key = "";
-		if(valueToKeyMap.containsValue(value))
+		if(valueToKeyMap.containsKey(value))
 		{
 			key = valueToKeyMap.get(value);
 		}
