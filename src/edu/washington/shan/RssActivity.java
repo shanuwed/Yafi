@@ -98,14 +98,18 @@ public class RssActivity extends ListActivity {
 	        startManagingCursor(mCursor);
 	
 	        // Create an array to specify the fields we want to display in the list (only TITLE)
-	        String[] from = new String[]{DBConstants.TITLE_NAME};
+	        String[] from = new String[]{DBConstants.TITLE_NAME, 
+	        		DBConstants.URL_NAME,
+	        		DBConstants.TIME_NAME};
 	
 	        // and an array of the fields we want to bind those fields to
-	        int[] to = new int[]{R.id.text1};
+	        int[] to = new int[]{R.id.rss_row_text_content, 
+	        		R.id.rss_row_text_title,
+	        		R.id.rss_row_text_date};
 	
 	        // Now create a simple cursor adapter and set it to display
-	        SimpleCursorAdapter items = 
-	            new SimpleCursorAdapter(this, R.layout.rss_row, mCursor, from, to);
+	        CustomCursorAdapter items = 
+	            new CustomCursorAdapter(this, R.layout.rss_row, mCursor, from, to);
 	        setListAdapter(items);
     	}
     }

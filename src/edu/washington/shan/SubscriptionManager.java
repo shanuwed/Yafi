@@ -3,6 +3,7 @@ package edu.washington.shan;
 import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.Calendar;
 import java.util.List;
 
 import org.mcsoxford.rss.RSSFeed;
@@ -96,6 +97,12 @@ public class SubscriptionManager {
 				String sqlTitle = title.replace("'", "''");
     			java.util.Date timestamp = rssItem.getPubDate();
     			Long timeInMillisec = timestamp.getTime();
+    			
+    			// Sometimes server returns a negative time-in-milliseconds
+    			if(timeInMillisec <= 0){
+    				// Use today's date
+    				timeInMillisec = Calendar.getInstance().getTimeInMillis();
+    			}
     			
     			// Does the item already exist?
     			// TODO: query can be further constrained by topicId

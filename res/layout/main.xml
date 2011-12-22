@@ -109,13 +109,19 @@
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:orientation="vertical" >
-
-                <TabWidget
-                    android:id="@android:id/tabs"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content" >
-                </TabWidget>
-
+                
+				<HorizontalScrollView 
+				        android:id="@+id/horizontalScrollView1" 
+				        android:layout_width="fill_parent" 
+				        android:layout_height="wrap_content"
+				        android:fillViewport="true"
+				        android:scrollbars="none">
+	                <TabWidget
+	                    android:id="@android:id/tabs"
+	                    android:layout_width="fill_parent"
+	                    android:layout_height="wrap_content" >
+	                </TabWidget>
+				</HorizontalScrollView>
                 <FrameLayout
                     android:id="@android:id/tabcontent"
                     android:layout_width="fill_parent"
