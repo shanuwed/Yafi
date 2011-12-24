@@ -17,6 +17,13 @@ import android.database.Cursor;
 import android.util.Log;
 
 /**
+ * Subscription manager checks for connectivity to the server.
+ * Also it retreives RSS feeds from the server, and checks to see
+ * if feeds already exist in the database. It only adds new feeds
+ * to the database (to prevent duplicates.)
+ * 
+ * This class is meant to be instantiated in a background worker thread.
+ * 
  * @author shan@uw.edu
  *
  */
@@ -96,7 +103,7 @@ public class SubscriptionManager {
 				String title = rssItem.getTitle();
 				String sqlTitle = title.replace("'", "''");
     			java.util.Date timestamp = rssItem.getPubDate();
-    			Long timeInMillisec = timestamp.getTime();
+    			long timeInMillisec = timestamp.getTime();
     			
     			// Sometimes server returns a negative time-in-milliseconds
     			if(timeInMillisec <= 0){

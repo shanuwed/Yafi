@@ -16,10 +16,12 @@
     <string name="menu_title_settings">Settings</string>
     <string name="menu_title_help">Help</string>
     <string name="settings_title">RSS Settings</string>
-    <string name="settings_saving_policy_title">Save Policy</string>
+    <string name="settings_saving_policy_title">Retention Policy</string>
     <string name="settings_saving_policy_summary">Delete RSS feeds older than 30 days</string>
-    <string name="settings_sync_title">Sync</string>
-    <string name="settings_sync_summary">Automatically sync RSS feed</string>
+    <string name="settings_sync_title">Auto Sync</string>
+    <string name="settings_sync_summary">Automatically pull RSS feeds from server</string>
+    <string name="settings_rss_feed_save_key">settings_rss_feed_save</string>
+    <string name="settings_auto_sync_key">settings_auto_sync</string>
         
 	<!-- Used as tab and preference labels -->
 	<string name="title_usmarkets">U.S Markets</string>

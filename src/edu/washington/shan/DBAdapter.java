@@ -16,6 +16,8 @@
 
 package edu.washington.shan;
 
+import java.util.Calendar;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -100,6 +102,22 @@ public class DBAdapter {
     public boolean deleteItem(long rowId) {
 
         return mDb.delete(DBConstants.TABLE_NAME, DBConstants.KEY_ID + "=" + rowId, null) > 0;
+    }
+    
+    /**
+     * Delete items that are older than x days
+     * 
+     * @param days
+     * @return true if deleted, false otherwise
+     */
+    public boolean deleteItemsOlderThan(int days) {
+    	
+    	Calendar cal = Calendar.getInstance(); // now
+    	cal.roll(Calendar.DAY_OF_YEAR, -days); // roll back x days from now
+    	
+    	return mDb.delete(DBConstants.TABLE_NAME, 
+			DBConstants.TIME_NAME + "< " + Long.toString(cal.getTimeInMillis()), 
+			null) > 0;
     }
 
     /**

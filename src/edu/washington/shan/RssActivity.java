@@ -115,11 +115,11 @@ public class RssActivity extends ListActivity {
     }
     
     /**
-     * The message is originated from the Main activity to 
-     * notify that the RSS data retrieval is completed.
+     * The message is to 
+     * notify that the RSS data retrieval is complete.
      * As soon as we get the message we update the list.
      * TODO: when you click on the refresh button and switch 
-     * the tab the original tab won't be receiving this message.
+     * the tab the original tab won receive this message.
      */
     protected class RefreshBroadcastReceiver extends BroadcastReceiver 
     {

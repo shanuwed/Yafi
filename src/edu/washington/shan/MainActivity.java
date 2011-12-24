@@ -46,11 +46,12 @@ public class MainActivity extends TabActivity {
         mPrefKeyManager = PrefKeyManager.getInstance();
         mPrefKeyManager.initialize(this); // be sure to initialize before using it
         
+        cleanupOldFeeds();
         initializePrefs();
         addTabsBasedOnPreferences();
     }
 
-    /* (non-Javadoc)
+	/* (non-Javadoc)
 	 * @see android.app.Activity#onCreateOptionsMenu(android.view.Menu)
 	 */
 	@Override
@@ -130,6 +131,24 @@ public class MainActivity extends TabActivity {
         editor.commit();
     }
     
+    /**
+     * Delete old feeds if preferences are set
+     */
+    private void cleanupOldFeeds() 
+    {
+        SharedPreferences sharedPref = getSharedPreferences(
+        		mResources.getString(R.string.pref_filename), 
+        		MODE_PRIVATE);
+        
+        if(sharedPref.getBoolean(
+        		mResources.getString(R.string.settings_rss_feed_save_key), false)){
+        	DBAdapter dbAdapter = new DBAdapter(this);
+        	dbAdapter.open();
+        	dbAdapter.deleteItemsOlderThan(Constants.RETENTION_IN_DAYS); // x days
+        	dbAdapter.close();
+        }
+	}
+
     /* (non-Javadoc)
 	 * @see android.app.Activity#onActivityResult(int, int, android.content.Intent)
 	 */
@@ -143,7 +162,7 @@ public class MainActivity extends TabActivity {
 		
 		if(requestCode == ACTIVITY_SETTINGS)
 		{
-			// nothing yet
+			cleanupOldFeeds();
 		}
 		else if(requestCode == ACTIVITY_PREF)
 		{
@@ -216,7 +235,7 @@ public class MainActivity extends TabActivity {
 	}
 
 	/**
-	 * This is the callback for the background to thread to call
+	 * Callback function for the background thread to call
 	 * when it's done.
 	 */
 	private Handler.Callback mCallback = new Handler.Callback() 
@@ -266,28 +285,35 @@ public class MainActivity extends TabActivity {
     {
 		Log.v(TAG, "onRefresh");
 		
-		// Set the progress bar visibility
-		// Start the progressbar.
-		mProgressBar.setVisibility(ProgressBar.VISIBLE);
-		
-    	// Figure out the active tab
-        TabHost tabHost = getTabHost();  // The activity TabHost
-        String currentTabTag = tabHost.getCurrentTabTag(); // like "usmarkets"
-        
-        String key = "subscriptionoptions_" + currentTabTag;
-        String rssUrl = Constants.RSS_BASE_URI + currentTabTag;
-        int topicId = PrefKeyManager.getInstance().keyToValue(key);
-        
-        // Start a background thread to sync
-        // The background thead shall get the latest RSS feed
-        // then compare to the RSS items in the db.
-        // If there are new items, add them to the db (only the new ones)
-        // Then signal back to the calling thread that
-        // there are new items available. The calling thread shall
-        // refresh the list.
-        mWorkerThread = new Thread(new WorkerThreadRunnable(this, mHandler, rssUrl, topicId));
-        mWorkerThread.start();
-        
+		// Poor man's synchronization.
+		// Check for visibility of the progress bar to
+		// determine if a thread is already started.
+		// If a thread is already in work do not start another one.
+		// Visibility is one of VISIBLE, INVISIBLE, GONE.
+		if(ProgressBar.VISIBLE != mProgressBar.getVisibility())
+		{
+			// Set the progress bar visibility
+			// Start the progressbar.
+			mProgressBar.setVisibility(ProgressBar.VISIBLE);
+			
+	    	// Figure out the active tab
+	        TabHost tabHost = getTabHost();  // The activity TabHost
+	        String currentTabTag = tabHost.getCurrentTabTag(); // like "usmarkets"
+	        
+	        String key = "subscriptionoptions_" + currentTabTag;
+	        String rssUrl = Constants.RSS_BASE_URI + currentTabTag;
+	        int topicId = PrefKeyManager.getInstance().keyToValue(key);
+	        
+	        // Start a background thread to sync.
+	        // The background thead gets the latest RSS feeds from the server.
+	        // If there are new items, it adds them to the db.
+	        // Then the thread signals back to the caller that
+	        // new items are available. The caller sends out a
+	        // broadcast message. Unon receiving a broadcast message
+	        // a tab (RssActivity) refreshes its list view.
+	        mWorkerThread = new Thread(new WorkerThreadRunnable(this, mHandler, rssUrl, topicId));
+	        mWorkerThread.start();
+		}
     }
     
     /**

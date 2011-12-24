@@ -17,4 +17,6 @@ public class Constants {
 	public static final String KEY_TITLE = "TITLE";
 	public static final String KEY_STATUS = "STATUS";
 	public static final String KEY_TOPICID = "TOPICID";
+	public static final int RETENTION_IN_DAYS = 30;
+	public static final int AUTOSYNC_FREQUENCY_IN_HOURS = 3;
 }
