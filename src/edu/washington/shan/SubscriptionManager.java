@@ -22,7 +22,7 @@ import android.util.Log;
  * if feeds already exist in the database. It only adds new feeds
  * to the database (to prevent duplicates.)
  * 
- * This class is meant to be instantiated in a background worker thread.
+ * This class is meant to be instantiated within a background worker thread.
  * 
  * @author shan@uw.edu
  *
@@ -70,15 +70,16 @@ public class SubscriptionManager {
     	return result;
     }
     
-    public boolean getRssFeed(String url, int topicId)
+    public boolean getRssFeed(String tabTag)
     {
-    	assert topicId >=0;
+    	assert tabTag != null && tabTag.length() > 0;
     	
         boolean ret = false;
         mDbAdapter.open();
         try 
         {
-			ret = getRssFeedPrivate(url, topicId);
+			ret = getRssFeedPrivate(Constants.RSS_BASE_URI + tabTag, 
+					PrefKeyManager.getInstance().keyToValue(tabTag));
 		} 
         catch (UnknownHostException e) 
         {

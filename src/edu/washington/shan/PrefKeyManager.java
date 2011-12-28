@@ -13,16 +13,14 @@ import android.content.res.Resources;
  * @author shan@uw.edu
  * 
  * Singleton class to manage preference keys
- * A preference key is comprised of two parts:
- *    <A boilerplate name>_<An RSS URL title>
- * Such as:
- *    subscriptionoptions_SavingsLoans
- * Split the key by the underscore. The second
- * part is the RSS URL you should append to RSS_BASE_URI
+ * such as:
+ *    SavingsLoans
+ * The preference key coincides with the 
+ * RSS URL that you append to RSS_BASE_URI
  * to build a full RSS URL.
  * 
  * This class is to convert a preference key to
- * an integer that you can store in a db, and vice versa.
+ * an integer that can be stored in database, and vice versa.
  * Integer in both Maps is stored as 'topicId' in the db.
  *
  */

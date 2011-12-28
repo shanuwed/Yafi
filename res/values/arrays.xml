@@ -3,28 +3,27 @@
     
     <!-- These are the keys used in CheckBoxPreference in subscriptionoptions.xml-->
     <string-array name="subscriptionoptions_keys">
-       <item>subscriptionoptions_usmarkets</item>
-       <item>subscriptionoptions_mostpopular</item>
-       <item>subscriptionoptions_investingstrategies</item>
-       <item>subscriptionoptions_mortgages</item>
-       <item>subscriptionoptions_taxes</item>
-       <item>subscriptionoptions_OilGasRefiningMarketing</item>
-       <item>subscriptionoptions_gold</item>
-       <item>subscriptionoptions_silver</item>
-       <item>subscriptionoptions_SteelIron</item>
-       <item>subscriptionoptions_Synthetics</item>
-       <item>subscriptionoptions_AssetManagements</item>
-       <item>subscriptionoptions_RealEstateDevelopment</item>
-       <item>subscriptionoptions_CreditServices</item>
-       <item>subscriptionoptions_LifeInsurance</item>
-       <item>subscriptionoptions_SavingsLoans</item>
-       <item>subscriptionoptions_HealthcarePlans</item>
-       <item>subscriptionoptions_Hospitals</item>
-       <item>subscriptionoptions_MedicalInstrumentsSupplies</item>
-       <item>subscriptionoptions_ApplicationSoftware</item>
-       <item>subscriptionoptions_HealthcareInformationServices</item>
-       <item>subscriptionoptions_InternetSoftwareServices</item>
-       <item>subscriptionoptions_WirelessCommunications</item>
+       <item>usmarkets</item>
+       <item>mostpopular</item>
+       <item>investingstrategies</item>
+       <item>taxes</item>
+       <item>OilGasRefiningMarketing</item>
+       <item>gold</item>
+       <item>silver</item>
+       <item>SteelIron</item>
+       <item>Synthetics</item>
+       <item>AssetManagements</item>
+       <item>RealEstateDevelopment</item>
+       <item>CreditServices</item>
+       <item>LifeInsurance</item>
+       <item>SavingsLoans</item>
+       <item>HealthcarePlans</item>
+       <item>Hospitals</item>
+       <item>MedicalInstrumentsSupplies</item>
+       <item>ApplicationSoftware</item>
+       <item>HealthcareInformationServices</item>
+       <item>InternetSoftwareServices</item>
+       <item>WirelessCommunications</item>
     </string-array>
     
     <!-- Used as tab and preference titles -->
@@ -32,7 +31,6 @@
 	    <item>@string/title_usmarkets</item>
 	    <item>@string/title_mostpopular</item>
 	    <item>@string/title_investingstrategies</item>
-	    <item>@string/title_mortgages</item>
 	    <item>@string/title_taxes</item>
 	    <item>@string/title_OilGasRefiningMarketing</item>
 	    <item>@string/title_gold</item>

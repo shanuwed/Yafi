@@ -17,6 +17,10 @@ import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 
 /**
+ * This activity is what's inside a tab showing a list
+ * of RSS feeds. It subscribes RefreshBroadcastReceiver
+ * broadcast message. Upon receiving the message it
+ * refreshes the list view.
  * @author shan@uw.edu
  *
  */
@@ -25,7 +29,7 @@ public class RssActivity extends ListActivity {
 	private static final String TAG="RssActivity";
     private DBAdapter mDbAdapter;
     private Cursor mCursor;
-    private String mKey = null; // preference key as defined in subscriptionoptions.xml. It may look like subscriptionoptions_mostpopular.
+    private String mTabTag = null; // preference key like "mostpopular" as defined in subscriptionoptions.xml.
 	private RefreshBroadcastReceiver refreshBroadcastReceiver = new RefreshBroadcastReceiver();
     
 	public void onCreate(Bundle savedInstanceState)
@@ -36,7 +40,7 @@ public class RssActivity extends ListActivity {
         Bundle extras = getIntent().getExtras();
         if (extras != null) 
         {
-            mKey = extras.getString(Constants.KEY_PREFKEY);
+            mTabTag = extras.getString(Constants.KEY_TAB_TAG);
         }
         
         // Immediately go to the database and query the items to show
@@ -64,7 +68,8 @@ public class RssActivity extends ListActivity {
     }
     
 	@Override
-	protected void onListItemClick(ListView l, View v, int position, long id) {
+	protected void onListItemClick(ListView l, View v, int position, long id) 
+	{
 		super.onListItemClick(l, v, position, id);
 		
 		// Using the id get the URL from the db
@@ -88,10 +93,10 @@ public class RssActivity extends ListActivity {
     {
     	// For the given key get the int value and use that
     	// to retrieve RSS entries from the db.
-    	if(mKey != null && mKey.length() > 0)
+    	if(mTabTag != null && mTabTag.length() > 0)
     	{
-	    	int topicId = PrefKeyManager.getInstance().keyToValue(mKey); 
-	    	Log.v(TAG, "fillData called for key: " + mKey + " topicId: " + topicId);
+	    	int topicId = PrefKeyManager.getInstance().keyToValue(mTabTag); 
+	    	Log.v(TAG, "fillData called for key: " + mTabTag + " topicId: " + topicId);
 	    	
 	        // Get the rows from the database and create the item list
 	        mCursor = mDbAdapter.fetchItemsByTopicId(topicId);
@@ -117,9 +122,7 @@ public class RssActivity extends ListActivity {
     /**
      * The message is to 
      * notify that the RSS data retrieval is complete.
-     * As soon as we get the message we update the list.
-     * TODO: when you click on the refresh button and switch 
-     * the tab the original tab won receive this message.
+     * As soon as we get the message, update the list.
      */
     protected class RefreshBroadcastReceiver extends BroadcastReceiver 
     {
@@ -129,27 +132,8 @@ public class RssActivity extends ListActivity {
 			String action = intent.getAction();
 			if(action.equals(Constants.REFRESH_ACTION))
 			{
-				// Retrieve the topic Id and see if it's valid
-				int topicId = intent.getIntExtra(Constants.KEY_TOPICID, -1);
-				if(-1 != topicId)
-				{
-					// Get the topic and see if it's valid
-					String topic = PrefKeyManager.getInstance().ValueToKey(topicId);
-					if(topic.length() > 0)
-					{
-						// Is this broadcast message intended for this activity?
-						if(0 == topic.compareTo(mKey))
-						{
-					    	Log.v(TAG, "RefreshBroadcastReceiver for key: " + mKey);
-					    	fillData();
-						}
-						else
-						{
-							// message is intended for other Rss activity...
-							// TODO: save it for later retrieval
-						}
-					}
-				}
+		    	Log.v(TAG, "RefreshBroadcastReceiver for key: " + mTabTag);
+		    	fillData();
 			}
 		}
     }

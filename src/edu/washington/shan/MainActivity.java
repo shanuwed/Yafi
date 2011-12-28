@@ -1,5 +1,8 @@
 package edu.washington.shan;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.app.AlertDialog;
 import android.app.TabActivity;
 import android.content.DialogInterface;
@@ -12,10 +15,12 @@ import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.webkit.WebView;
 import android.widget.ProgressBar;
 import android.widget.TabHost;
 import android.widget.Toast;
@@ -28,9 +33,10 @@ public class MainActivity extends TabActivity {
 	private static final int ACTIVITY_SEARCH = 2;
 	private Resources mResources;
     private PrefKeyManager mPrefKeyManager;
+    private SyncManager mSyncManager;
     private Handler mHandler;
-    private Thread mWorkerThread;
     private ProgressBar mProgressBar;
+    private List<String> mTabTags; // collection of tab tags like: usmarkets, mostpopular...
 
     @Override
     public void onCreate(Bundle savedInstanceState) 
@@ -44,11 +50,32 @@ public class MainActivity extends TabActivity {
         mHandler = new Handler(mCallback);
         mResources = getResources();
         mPrefKeyManager = PrefKeyManager.getInstance();
+        mSyncManager = new SyncManager(this, mHandler); // pass the context and the handler
         mPrefKeyManager.initialize(this); // be sure to initialize before using it
+        mTabTags = new ArrayList<String>();
         
         cleanupOldFeeds();
         initializePrefs();
         addTabsBasedOnPreferences();
+        syncAtStartup();
+        
+        // When a tab changes check to see if new RSS feeds are available for
+        // the tab. Then sends a broadcast message to refresh the tab.
+        getTabHost().setOnTabChangedListener(new TabHost.OnTabChangeListener(){
+        	@Override
+        	public void onTabChanged(String tabId) {
+        		// tabId == tabTag
+        		
+                // Check to see if new data is available
+                if(mSyncManager.isNewDataAvailable(tabId))
+                {
+                	mSyncManager.clearNewDataAvailableFlag(tabId);
+            		
+    		    	// Send a message for RSS activity to refresh
+                	Intent intent = new Intent(Constants.REFRESH_ACTION);
+    		    	sendBroadcast(intent);
+                }
+        	}});        
     }
 
 	/* (non-Javadoc)
@@ -73,7 +100,7 @@ public class MainActivity extends TabActivity {
 			// Launch to SettingsPrefActivity screen
 	    	Intent intent = new Intent(this, SettingsPrefActivity.class);
 	    	startActivityForResult(intent, ACTIVITY_SETTINGS);
-		}
+		}/*
 		else if(item.getItemId() == R.id.mainmenu_help)
 		{
 			// Show the help dialog
@@ -90,7 +117,28 @@ public class MainActivity extends TabActivity {
 					}
 				});
 			dialog.show();
+		}*/
+		else if(item.getItemId() == R.id.mainmenu_help)
+		{
+    	    LayoutInflater inflater = LayoutInflater.from(MainActivity.this);
+    	    View dlgView = inflater.inflate(R.layout.help_dialog_layout, null);
+
+    	    WebView webview = (WebView) dlgView.findViewById(R.id.help_dialog_layout_webView1);
+    	    webview.loadUrl("file:///android_asset/readme.html");
+    	    
+    	    AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+    	    builder.setTitle(mResources.getString(R.string.help_dialog_title));
+    	    builder.setIcon(R.drawable.rss_active); // sets the top left icon
+    	    builder.setView(dlgView);
+
+    	    builder.setPositiveButton("Close", new DialogInterface.OnClickListener() {
+    	        public void onClick(DialogInterface dialog, int which) {
+    	            dialog.cancel();
+    	        }
+    	    }).show();
 		}
+		
+		// Returning true ensures that the menu event is not be further processed.
 		return true;
 	}
 
@@ -114,11 +162,15 @@ public class MainActivity extends TabActivity {
 	}
     
 	/**
-     * Force to create a pref: <boolean name="subscriptionoptions_usmarkets" value="true" />
+     * Forces to create a preference: <boolean name="usmarkets" value="true" />
+     * 
+     * If you want to change the default update these two files:
+     * subscriptionoptions.xml - the first checkboxpreference is the default.
+     * arrays.xml - the first items in subscriptionoptions_keys and
+     * subscriptionoptions_keys_title arrays are the defaults.
      */
     private void initializePrefs()
     {
-        boolean prefValue = true;
         String[] prefList = mResources.getStringArray(R.array.subscriptionoptions_keys);
         String prefKey = prefList[0];
         
@@ -127,12 +179,12 @@ public class MainActivity extends TabActivity {
         		MODE_PRIVATE);
         
         Editor editor = sharedPref.edit();
-        editor.putBoolean(prefKey, prefValue);
+        editor.putBoolean(prefKey, true);
         editor.commit();
     }
     
     /**
-     * Delete old feeds if preferences are set
+     * Deletes old feeds if preferences are set.
      */
     private void cleanupOldFeeds() 
     {
@@ -148,6 +200,22 @@ public class MainActivity extends TabActivity {
         	dbAdapter.close();
         }
 	}
+    
+    /**
+     * It syncs RSS feeds if the preference to 'sync at startup' is selected.
+     * 
+     */
+    private void syncAtStartup()
+    {
+        SharedPreferences sharedPref = getSharedPreferences(
+        		mResources.getString(R.string.pref_filename), 
+        		MODE_PRIVATE);
+        
+        if(sharedPref.getBoolean(
+        		mResources.getString(R.string.settings_auto_sync_key), false)){
+        	sync();
+        }
+    }
 
     /* (non-Javadoc)
 	 * @see android.app.Activity#onActivityResult(int, int, android.content.Intent)
@@ -160,11 +228,11 @@ public class MainActivity extends TabActivity {
 		Log.v(TAG, "onActivityResult called with requestCode:" + requestCode +
 				" resultCode:" + resultCode);
 		
-		if(requestCode == ACTIVITY_SETTINGS)
+		if(requestCode == ACTIVITY_SETTINGS) // returned from settings menu
 		{
 			cleanupOldFeeds();
 		}
-		else if(requestCode == ACTIVITY_PREF)
+		else if(requestCode == ACTIVITY_PREF) // returned from Subscription preference activity
 		{
 	        // make sure there's at least one tab or it will throw.
 	        // Force the first preference to be on all the time.
@@ -172,6 +240,7 @@ public class MainActivity extends TabActivity {
 	        
 	        TabHost tabHost = getTabHost();
 	        tabHost.clearAllTabs();
+	        mTabTags.clear();
 	        addTabsBasedOnPreferences();
 		}
 		else if(requestCode == ACTIVITY_SEARCH)
@@ -181,14 +250,12 @@ public class MainActivity extends TabActivity {
 	}
 
     /**
-     * Add tabs according to the subscription
+     * Adds tabs according to the subscription
      * preferences set by the user.
      * Remove all tabs before calling this.
      */
 	private void addTabsBasedOnPreferences() 
     {
-    	boolean defValue = false;
-    	
 		SharedPreferences prefs =
 			PreferenceManager.getDefaultSharedPreferences(this);
 		
@@ -196,42 +263,54 @@ public class MainActivity extends TabActivity {
 		String[] tabLabels = mResources.getStringArray(R.array.subscriptionoptions_keys_title);
 		
 		// Get the keys from the resource to check each preference
-		String[] tabKeys = mResources.getStringArray(R.array.subscriptionoptions_keys);
+		String[] tabTags = mResources.getStringArray(R.array.subscriptionoptions_keys);
 		
-		for(int index=0; index < tabKeys.length; index++)
+		for(int index=0; index < tabTags.length; index++)
 		{
-			String key = tabKeys[index];
-			String[] tokens = key.split("_");
-			// assert keyParts.length == 2
+			String tabTag = tabTags[index];
 			
 			// Is the preference selected?
-			if(prefs.getBoolean(key, defValue))
+			if(prefs.getBoolean(tabTag, false))
 			{
-				addNewTab(key, tokens[1], tabLabels[index]);
+				if(addNewTab(tabTag, tabLabels[index]))
+				{
+					// keep track of the tabs currently open
+					mTabTags.add(tabTag);
+				}
 			}
 		}
 	}
 
-	private void addNewTab(String key, String tag, String label) 
+	/**
+	 * Adds a new tab as specified by the parameters.
+	 * 
+	 * @param tabTag A key string is put onto the Intent and passed to RssActivity. This is
+	 *            the same as the tab Tag which is used as an indentifier of a tab
+	 * @param label Label for a tab which shows up in UI
+	 */
+	private boolean addNewTab(String tabTag, String label) 
 	{
+		boolean ret = false;
 		try
 		{
 			// Create an intent and stuff it with a key.
 			// we will need the key to figure out topicId to 
 			// query the db in RssActivity.
 			Intent intent= new Intent(this, RssActivity.class);
-			intent.putExtra(Constants.KEY_PREFKEY, key); 
+			intent.putExtra(Constants.KEY_TAB_TAG, tabTag); 
 			
 	        TabHost tabHost = getTabHost();
 	        TabHost.TabSpec spec;
 	
 	        // Initialize a TabSpec for each tab and add it to the TabHost
-	        spec = tabHost.newTabSpec(tag).setIndicator(label,
+	        spec = tabHost.newTabSpec(tabTag).setIndicator(label,
 	                          mResources.getDrawable(R.drawable.ic_tab_lang))
 	                      .setContent(intent);
 	        tabHost.addTab(spec);
+	        ret = true;
 		}
 		catch(java.lang.NullPointerException e){}
+		return ret;
 	}
 
 	/**
@@ -243,6 +322,8 @@ public class MainActivity extends TabActivity {
 		@Override
 		public boolean handleMessage(Message msg) {
 			
+			Log.v(TAG, "Handler.Callback entered");
+			
 			// The background thread returned.
 			// Stop the progressbar.
 			mProgressBar.setVisibility(ProgressBar.GONE);
@@ -250,20 +331,29 @@ public class MainActivity extends TabActivity {
 			Bundle bundle = msg.getData();
 			if(bundle != null)
 			{
-				boolean result = bundle.getBoolean(Constants.KEY_STATUS);
-				int topicId = bundle.getInt(Constants.KEY_TOPICID);
-				if(result)
+				boolean overallResult = true;
+				boolean[] results = bundle.getBooleanArray(Constants.KEY_STATUS);
+				//String[] tabTags = bundle.getStringArray(Constants.KEY_TAB_TAG);// only if needed
+				for(boolean result : results)
 				{
-					Log.v(TAG, "RSS retrieval succeeded for topicId:" + topicId);
+					if(!result)
+					{
+						overallResult = false;
+						break;
+					}
+				}
+				
+				if(overallResult)
+				{
+					Log.v(TAG, "RSS retrieval succeeded");
 					
-			    	// Send "refresh" message to the tab
+			    	// Send "refresh" message to a tab. Only the active tab will receive.
 			    	Intent intent = new Intent(Constants.REFRESH_ACTION);
-			    	intent.putExtra(Constants.KEY_TOPICID, topicId);
 			    	sendBroadcast(intent);
 				}
 				else
 				{
-					Log.v(TAG, "RSS retrieval failed for topicId:" + topicId);
+					Log.v(TAG, "RSS retrieval failed");
 					Toast.makeText(getApplicationContext(), 
 							mResources.getString(R.string.rss_retrieval_failed), 
 							Toast.LENGTH_SHORT).show();
@@ -272,6 +362,23 @@ public class MainActivity extends TabActivity {
 			return false;
 		}
 	};
+	
+	private void sync()
+	{
+		// Poor man's synchronization.
+		// Check for visibility of the progress bar to
+		// determine if a thread is already started.
+		// If a thread is already in work do not start another one.
+		// Visibility is one of VISIBLE, INVISIBLE, GONE.
+		if(ProgressBar.VISIBLE != mProgressBar.getVisibility())
+		{
+			// Set the progress bar visibility
+			// Start the progressbar.
+			mProgressBar.setVisibility(ProgressBar.VISIBLE);
+			String[] tabTags = mTabTags.toArray(new String[]{}); 
+			mSyncManager.sync(tabTags);
+		}
+	}
 	
 	/*
      * Below is to handle the actionbar events
@@ -284,36 +391,7 @@ public class MainActivity extends TabActivity {
     public void onRefresh(View v)
     {
 		Log.v(TAG, "onRefresh");
-		
-		// Poor man's synchronization.
-		// Check for visibility of the progress bar to
-		// determine if a thread is already started.
-		// If a thread is already in work do not start another one.
-		// Visibility is one of VISIBLE, INVISIBLE, GONE.
-		if(ProgressBar.VISIBLE != mProgressBar.getVisibility())
-		{
-			// Set the progress bar visibility
-			// Start the progressbar.
-			mProgressBar.setVisibility(ProgressBar.VISIBLE);
-			
-	    	// Figure out the active tab
-	        TabHost tabHost = getTabHost();  // The activity TabHost
-	        String currentTabTag = tabHost.getCurrentTabTag(); // like "usmarkets"
-	        
-	        String key = "subscriptionoptions_" + currentTabTag;
-	        String rssUrl = Constants.RSS_BASE_URI + currentTabTag;
-	        int topicId = PrefKeyManager.getInstance().keyToValue(key);
-	        
-	        // Start a background thread to sync.
-	        // The background thead gets the latest RSS feeds from the server.
-	        // If there are new items, it adds them to the db.
-	        // Then the thread signals back to the caller that
-	        // new items are available. The caller sends out a
-	        // broadcast message. Unon receiving a broadcast message
-	        // a tab (RssActivity) refreshes its list view.
-	        mWorkerThread = new Thread(new WorkerThreadRunnable(this, mHandler, rssUrl, topicId));
-	        mWorkerThread.start();
-		}
+		sync();
     }
     
     /**

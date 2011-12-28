@@ -10,23 +10,19 @@
         android:title="@string/title_newstopic">
         
         <CheckBoxPreference
-            android:key="subscriptionoptions_usmarkets"
+            android:key="usmarkets"
             android:title="@string/title_usmarkets" android:enabled="false" android:selectable="false" android:summary="This option is always selected."/>
         
         <CheckBoxPreference
-            android:key="subscriptionoptions_mostpopular"
+            android:key="mostpopular"
             android:title="@string/title_mostpopular"/>
         
         <CheckBoxPreference
-            android:key="subscriptionoptions_investingstrategies"
+            android:key="investingstrategies"
             android:title="@string/title_investingstrategies"/>
         
         <CheckBoxPreference
-            android:key="subscriptionoptions_mortgages"
-            android:title="@string/title_mortgages"/>
-                
-        <CheckBoxPreference
-            android:key="subscriptionoptions_taxes"
+            android:key="taxes"
             android:title="@string/title_taxes"/>
         
     </PreferenceCategory>
@@ -37,23 +33,23 @@
         android:title="@string/title_basicmaterials">
         
         <CheckBoxPreference
-            android:key="subscriptionoptions_OilGasRefiningMarketing"
+            android:key="OilGasRefiningMarketing"
             android:title="@string/title_OilGasRefiningMarketing"/>
         
         <CheckBoxPreference
-            android:key="subscriptionoptions_gold"
+            android:key="gold"
             android:title="@string/title_gold"/>
         
         <CheckBoxPreference
-            android:key="subscriptionoptions_silver"
+            android:key="silver"
             android:title="@string/title_silver"/>
         
         <CheckBoxPreference
-            android:key="subscriptionoptions_SteelIron"
+            android:key="SteelIron"
             android:title="@string/title_SteelIron"/>
                 
         <CheckBoxPreference
-            android:key="subscriptionoptions_Synthetics"
+            android:key="Synthetics"
             android:title="@string/title_Synthetics"/>
         
     </PreferenceCategory>
@@ -65,23 +61,23 @@
         android:title="@string/title_financial">
         
         <CheckBoxPreference
-            android:key="subscriptionoptions_AssetManagements"
+            android:key="AssetManagements"
             android:title="@string/title_AssetManagements"/>
         
         <CheckBoxPreference
-            android:key="subscriptionoptions_RealEstateDevelopment"
+            android:key="RealEstateDevelopment"
             android:title="@string/title_RealEstateDevelopment"/>
         
         <CheckBoxPreference
-            android:key="subscriptionoptions_CreditServices"
+            android:key="CreditServices"
             android:title="@string/title_CreditServices"/>
         
         <CheckBoxPreference
-            android:key="subscriptionoptions_LifeInsurance"
+            android:key="LifeInsurance"
             android:title="@string/title_LifeInsurance"/>
                 
         <CheckBoxPreference
-            android:key="subscriptionoptions_SavingsLoans"
+            android:key="SavingsLoans"
             android:title="@string/title_SavingsLoans"/>
         
     </PreferenceCategory>
@@ -93,15 +89,15 @@
         android:title="@string/title_healthcare">
         
         <CheckBoxPreference
-            android:key="subscriptionoptions_HealthcarePlans"
+            android:key="HealthcarePlans"
             android:title="@string/title_HealthcarePlans"/>
         
         <CheckBoxPreference
-            android:key="subscriptionoptions_Hospitals"
+            android:key="Hospitals"
             android:title="@string/title_Hospitals"/>
         
         <CheckBoxPreference
-            android:key="subscriptionoptions_MedicalInstrumentsSupplies"
+            android:key="MedicalInstrumentsSupplies"
             android:title="@string/title_MedicalInstrumentsSupplies"/>
         
     </PreferenceCategory>
@@ -113,19 +109,19 @@
         android:title="@string/title_technology">
         
         <CheckBoxPreference
-            android:key="subscriptionoptions_ApplicationSoftware"
+            android:key="ApplicationSoftware"
             android:title="@string/title_ApplicationSoftware"/>
         
         <CheckBoxPreference
-            android:key="subscriptionoptions_HealthcareInformationServices"
+            android:key="HealthcareInformationServices"
             android:title="@string/title_HealthcareInformationServices"/>
         
         <CheckBoxPreference
-            android:key="subscriptionoptions_InternetSoftwareServices"
+            android:key="InternetSoftwareServices"
             android:title="@string/title_InternetSoftwareServices"/>
         
         <CheckBoxPreference
-            android:key="subscriptionoptions_WirelessCommunications"
+            android:key="WirelessCommunications"
             android:title="@string/title_WirelessCommunications"/>
         
     </PreferenceCategory>

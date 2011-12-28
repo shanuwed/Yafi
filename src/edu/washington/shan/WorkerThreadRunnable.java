@@ -3,6 +3,8 @@
  */
 package edu.washington.shan;
 
+import java.util.ArrayList;
+
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
@@ -16,17 +18,27 @@ import android.util.Log;
 public class WorkerThreadRunnable implements Runnable {
 	
 	private static final String TAG = "WorkerThreadRunnable";
-	private Handler mMainThreadHandler;
+	private Handler mHandler;
 	private Context mContext; 
-	private String mRssUrl;
-	private int mTopicId;
+	private String[] mTabTags;
 	
-	public WorkerThreadRunnable(Context context, Handler handler, String rssUrl, int topicId)
+	/**
+	 * Worker thread constructor
+	 * @param context Context under which to create DbAdapter and manage cursor
+	 * @param handler Callback function if the caller wants to be notified when worker thread is complete. May be null.
+	 * @param tabTags Tabs for which to retrieve RSS feeds
+	 */
+	public WorkerThreadRunnable(Context context, Handler handler, String[] tabTags)
 	{
+		// To enable the assertion do either of these:
+		// 1) adb shell setprop debug.assert 1
+		// 2) Send the command line argument "--enable-assert" to the dalvik VM
+		assert mContext != null;
+		assert tabTags != null && tabTags.length != 0;
+		
 		mContext = context;
-		mMainThreadHandler = handler;
-		mRssUrl = rssUrl;
-		mTopicId = topicId;
+		mHandler = handler;
+		mTabTags = tabTags;
 	}
 
 	/* (non-Javadoc)
@@ -34,28 +46,42 @@ public class WorkerThreadRunnable implements Runnable {
 	 */
 	@Override
 	public void run() {
-		Log.v(TAG, "Requesting RSS feed for:" + mRssUrl);
-		boolean rssResult = false; 
-
-    	SubscriptionManager subscription = new SubscriptionManager(mContext);
-    	if(subscription.checkConnection())
-    	{
-    		rssResult = subscription.getRssFeed(mRssUrl, mTopicId);
-    	}
-    	informFinish(rssResult);
+		
+		boolean[] results = new boolean[mTabTags.length];
+		
+		for(int index=0; index< mTabTags.length; index++)
+		{
+			Log.v(TAG, "requesting RSS feed for:" + mTabTags[index]);
+			results[index] = false; 
+	
+	    	SubscriptionManager subscription = new SubscriptionManager(mContext);
+	    	if(subscription.checkConnection())
+	    	{
+	    		results[index] = subscription.getRssFeed(mTabTags[index]);
+	    	}
+		}
+    	informFinish(results);
 	}
 	
-	public void informFinish(boolean result)
+	/**
+	 * Notify the caller of the worker thread completion
+	 * @param results
+	 */
+	public void informFinish(boolean[] results)
 	{
-		Log.v(TAG, "Finishing RSS feed for:" + mRssUrl);
+		Log.v(TAG, "Finished retreiving RSS feeds");
 		
+		// Return the status
 		Bundle bundle = new Bundle();
-		bundle.putBoolean(Constants.KEY_STATUS, result); // key, value
-		bundle.putInt(Constants.KEY_TOPICID, mTopicId); // key, value
+		bundle.putBooleanArray(Constants.KEY_STATUS, results);
+		bundle.putStringArray(Constants.KEY_TAB_TAG, mTabTags);
 		
-		Message msg = mMainThreadHandler.obtainMessage();
-		msg.setData(bundle);
-		mMainThreadHandler.sendMessage(msg);
+		if(mHandler != null)
+		{
+			Message msg = mHandler.obtainMessage();
+			msg.setData(bundle);
+			mHandler.sendMessage(msg);
+		}
 	}
 
 }
