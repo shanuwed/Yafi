@@ -31,6 +31,7 @@ public class RssActivity extends ListActivity {
     private Cursor mCursor;
     private String mTabTag = null; // preference key like "mostpopular" as defined in subscriptionoptions.xml.
 	private RefreshBroadcastReceiver refreshBroadcastReceiver = new RefreshBroadcastReceiver();
+    private CustomViewBinder customViewBinder = new CustomViewBinder();
     
 	public void onCreate(Bundle savedInstanceState)
 	{
@@ -66,14 +67,25 @@ public class RssActivity extends ListActivity {
         		new IntentFilter(Constants.REFRESH_ACTION));
         super.onResume();
     }
-    
+
 	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id) 
 	{
 		super.onListItemClick(l, v, position, id);
 		
+		launchSelectedItemInBrowser(id);
+	}
+	
+	/**
+	 * Given a rowId (_id in the rssentries table in the database)
+	 * it gets the record, figures out the URL and
+	 * starts an Intent to open the URL in the browser. 
+	 * @param rowId
+	 */
+	private void launchSelectedItemInBrowser(long rowId)
+	{
 		// Using the id get the URL from the db
-		Cursor cursor = mDbAdapter.fetchItemsByRowId(id);
+		Cursor cursor = mDbAdapter.fetchItemsByRowId(rowId);
 		startManagingCursor(cursor);
 		if(cursor != null)
 		{
@@ -105,17 +117,20 @@ public class RssActivity extends ListActivity {
 	        // Create an array to specify the fields we want to display in the list (only TITLE)
 	        String[] from = new String[]{DBConstants.TITLE_NAME, 
 	        		DBConstants.URL_NAME,
-	        		DBConstants.TIME_NAME};
+	        		DBConstants.TIME_NAME,
+	        		DBConstants.STATUS_NAME};
 	
 	        // and an array of the fields we want to bind those fields to
 	        int[] to = new int[]{R.id.rss_row_text_content, 
 	        		R.id.rss_row_text_title,
-	        		R.id.rss_row_text_date};
+	        		R.id.rss_row_text_date,
+	        		R.id.rss_row_thumbImage};
 	
 	        // Now create a simple cursor adapter and set it to display
-	        CustomCursorAdapter items = 
-	            new CustomCursorAdapter(this, R.layout.rss_row, mCursor, from, to);
-	        setListAdapter(items);
+	        SimpleCursorAdapter adapter = 
+	        	new SimpleCursorAdapter(this, R.layout.rss_row, mCursor, from, to);
+	        adapter.setViewBinder(customViewBinder);
+	        setListAdapter(adapter);
     	}
     }
     

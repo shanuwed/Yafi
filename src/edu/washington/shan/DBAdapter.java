@@ -101,23 +101,30 @@ public class DBAdapter {
      */
     public boolean deleteItem(long rowId) {
 
-        return mDb.delete(DBConstants.TABLE_NAME, DBConstants.KEY_ID + "=" + rowId, null) > 0;
+        return mDb.delete(DBConstants.TABLE_NAME, 
+        		DBConstants.KEY_ID + "=" + rowId, 
+        		null) > 0;
     }
     
     /**
-     * Delete items that are older than x days
+     * Delete items that are older than x days AND
+     * not marked favorite
      * 
      * @param days
      * @return true if deleted, false otherwise
      */
     public boolean deleteItemsOlderThan(int days) {
     	
-    	Calendar cal = Calendar.getInstance(); // now
-    	cal.roll(Calendar.DAY_OF_YEAR, -days); // roll back x days from now
-    	
-    	return mDb.delete(DBConstants.TABLE_NAME, 
-			DBConstants.TIME_NAME + "< " + Long.toString(cal.getTimeInMillis()), 
-			null) > 0;
+		if (days > 0) {
+			Calendar cal = Calendar.getInstance(); // now
+			cal.roll(Calendar.DAY_OF_YEAR, -days); // roll back x days from now
+
+			return mDb.delete(DBConstants.TABLE_NAME, DBConstants.TIME_NAME
+					+ "<" + Long.toString(cal.getTimeInMillis())
+					+ " AND " + DBConstants.STATUS_NAME
+					+ " = 0", null) > 0;
+		}
+		return false;
     }
 
     /**
@@ -184,7 +191,8 @@ public class DBAdapter {
             		DBConstants.TITLE_NAME,
             		DBConstants.URL_NAME,
             		DBConstants.TIME_NAME,
-            		DBConstants.TOPICID_NAME}, 
+            		DBConstants.TOPICID_NAME,
+            		DBConstants.STATUS_NAME}, 
                     DBConstants.TOPICID_NAME + "=" + topicId, 
                     null,
                     null,
@@ -226,4 +234,18 @@ public class DBAdapter {
         }
         return cursor;
     }
+
+	//sqlite>UPDATE rssentries SET Status ='1' WHERE _Id=555;   
+    public boolean setStatusByRowId(long rowId, int i) {
+
+        ContentValues updateStatus = new ContentValues();
+        updateStatus.put(DBConstants.STATUS_NAME, i);
+        
+		int numberOfRows = 
+        	mDb.update(DBConstants.TABLE_NAME, 
+        			updateStatus, 
+        			DBConstants.KEY_ID + "==?", 
+        			new String[]{Long.toString(rowId)});
+        return (numberOfRows != 0);
+	}
 }

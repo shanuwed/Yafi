@@ -3,15 +3,10 @@
  */
 package edu.washington.shan;
 
-import edu.washington.shan.RssActivity.RefreshBroadcastReceiver;
 import android.app.ListActivity;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.SimpleCursorAdapter;
 
 /**
  * @author shan@uw.edu

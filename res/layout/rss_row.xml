@@ -5,7 +5,7 @@
     android:layout_height="fill_parent" >
 
 <ImageView
-    android:id="@+id/thumbImage"
+    android:id="@+id/rss_row_thumbImage"
     android:layout_width="32dip"
     android:layout_height="fill_parent"
     android:padding="2dip"

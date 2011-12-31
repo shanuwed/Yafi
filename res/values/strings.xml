@@ -22,6 +22,7 @@
     <string name="settings_sync_summary">Automatically pull RSS feeds from server when the app starts</string>
     <string name="settings_rss_feed_save_key">settings_rss_feed_save</string>
     <string name="settings_auto_sync_key">settings_auto_sync</string>
+    <string name="mark_as_favorite_key">Placeholder for internal use of the resource Id</string>
         
 	<!-- Used as tab and preference labels -->
 	<string name="title_usmarkets">U.S Markets</string>

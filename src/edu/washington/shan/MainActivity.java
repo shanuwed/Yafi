@@ -44,8 +44,6 @@ public class MainActivity extends TabActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         
-        initializeDatabase();
-        
         mProgressBar = (ProgressBar)findViewById(R.id.progressBar1);
         mHandler = new Handler(mCallback);
         mResources = getResources();
@@ -54,10 +52,13 @@ public class MainActivity extends TabActivity {
         mPrefKeyManager.initialize(this); // be sure to initialize before using it
         mTabTags = new ArrayList<String>();
         
+        prepareDatabase();
+        preparePreferences();
         cleanupOldFeeds();
-        initializePrefs();
         addTabsBasedOnPreferences();
         syncAtStartup();
+        showAboutDialogBoxOnFirstRun();
+        clearFirstTimeRunFlag();
         
         // When a tab changes check to see if new RSS feeds are available for
         // the tab. Then sends a broadcast message to refresh the tab.
@@ -100,42 +101,10 @@ public class MainActivity extends TabActivity {
 			// Launch to SettingsPrefActivity screen
 	    	Intent intent = new Intent(this, SettingsPrefActivity.class);
 	    	startActivityForResult(intent, ACTIVITY_SETTINGS);
-		}/*
+		}
 		else if(item.getItemId() == R.id.mainmenu_help)
 		{
-			// Show the help dialog
-			AlertDialog dialog = new AlertDialog.Builder(this).create();
-			dialog.setTitle(mResources.getString(R.string.help_dialog_title));
-			dialog.setMessage(mResources.getString(R.string.help_dialog_msg));
-			dialog.setButton(DialogInterface.BUTTON_POSITIVE, 
-					mResources.getString(R.string.help_dialog_okay),
-				new DialogInterface.OnClickListener() {
-					
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						// nothing to do 
-					}
-				});
-			dialog.show();
-		}*/
-		else if(item.getItemId() == R.id.mainmenu_help)
-		{
-    	    LayoutInflater inflater = LayoutInflater.from(MainActivity.this);
-    	    View dlgView = inflater.inflate(R.layout.help_dialog_layout, null);
-
-    	    WebView webview = (WebView) dlgView.findViewById(R.id.help_dialog_layout_webView1);
-    	    webview.loadUrl("file:///android_asset/readme.html");
-    	    
-    	    AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-    	    builder.setTitle(mResources.getString(R.string.help_dialog_title));
-    	    builder.setIcon(R.drawable.rss_active); // sets the top left icon
-    	    builder.setView(dlgView);
-
-    	    builder.setPositiveButton("Close", new DialogInterface.OnClickListener() {
-    	        public void onClick(DialogInterface dialog, int which) {
-    	            dialog.cancel();
-    	        }
-    	    }).show();
+    	    showAboutDialogBox();
 		}
 		
 		// Returning true ensures that the menu event is not be further processed.
@@ -143,22 +112,70 @@ public class MainActivity extends TabActivity {
 	}
 
 	/**
+	 * 
+	 */
+	private void showAboutDialogBox() {
+		LayoutInflater inflater = LayoutInflater.from(MainActivity.this);
+		View dlgView = inflater.inflate(R.layout.help_dialog_layout, null);
+
+		WebView webview = (WebView) dlgView.findViewById(R.id.help_dialog_layout_webView1);
+		webview.loadUrl("file:///android_asset/readme.html");
+		
+		AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+		builder.setTitle(mResources.getString(R.string.help_dialog_title));
+		builder.setIcon(R.drawable.rss_active); // sets the top left icon
+		builder.setView(dlgView);
+
+		builder.setPositiveButton("Close", new DialogInterface.OnClickListener() {
+		    public void onClick(DialogInterface dialog, int which) {
+		        dialog.cancel();
+		    }
+		}).show();
+	}
+	
+	private void showAboutDialogBoxOnFirstRun()	{
+        if(isFirstTimeRunFlagSet()) {
+        	showAboutDialogBox();
+        }
+	}
+
+	/**
+	 * Prepare database for the first run after install
 	 * Initializes the database by importing a pre-populated database
 	 * from the assets directory to the database directory.
 	 */
-	private void initializeDatabase() {
-		// Determine if this is the first time running the app
-        SharedPreferences sharedPref = getPreferences(MODE_PRIVATE);
-        if(!sharedPref.getBoolean("initialized", false))
-        {
+	private void prepareDatabase() {
+        if(isFirstTimeRunFlagSet()) {
         	// Copy the initial database from assets dir to database dir
         	DBHelper.importDatabase(this);
-        	
-        	// Now set the "initialized" flag
-        	SharedPreferences.Editor editor = sharedPref.edit();
-        	editor.putBoolean("initialized", true);
-        	editor.commit();
         }
+	}
+	
+	private void preparePreferences(){
+        if(isFirstTimeRunFlagSet()) {
+            String[] prefList = mResources.getStringArray(R.array.subscriptionoptions_keys);
+            setPreference(prefList[0], true); // show 'US market' tab
+            setPreference(prefList[1], true); // show 'Most Popular' tab
+        }
+	}
+	
+	private boolean isFirstTimeRunFlagSet(){
+		// Determine if this is the first time running the app
+		// Shared preference for 'initialized' is stored in 
+		// MainActivity.xml preference file which is different 
+		// from the subscription preferences file.
+        SharedPreferences sharedPref = getPreferences(MODE_PRIVATE);
+        if(!sharedPref.getBoolean("initialized", false))
+        	return true;
+        return false;
+	}
+	
+	private void clearFirstTimeRunFlag(){
+        SharedPreferences sharedPref = getPreferences(MODE_PRIVATE);
+    	// Now set the "initialized" flag
+    	SharedPreferences.Editor editor = sharedPref.edit();
+    	editor.putBoolean("initialized", true);
+    	editor.commit();
 	}
     
 	/**
@@ -169,17 +186,25 @@ public class MainActivity extends TabActivity {
      * arrays.xml - the first items in subscriptionoptions_keys and
      * subscriptionoptions_keys_title arrays are the defaults.
      */
-    private void initializePrefs()
+    private void initializePreferences()
     {
         String[] prefList = mResources.getStringArray(R.array.subscriptionoptions_keys);
-        String prefKey = prefList[0];
-        
+        setPreference(prefList[0], true);
+    }
+    
+    /**
+     * Given preference key and value it sets the shared preference
+     * @param prefKey
+     * @param value
+     */
+    private void setPreference(String prefKey, boolean value)
+    {
         SharedPreferences sharedPref = getSharedPreferences(
         		mResources.getString(R.string.pref_filename), 
         		MODE_PRIVATE);
         
         Editor editor = sharedPref.edit();
-        editor.putBoolean(prefKey, true);
+        editor.putBoolean(prefKey, value);
         editor.commit();
     }
     
@@ -236,7 +261,7 @@ public class MainActivity extends TabActivity {
 		{
 	        // make sure there's at least one tab or it will throw.
 	        // Force the first preference to be on all the time.
-	        initializePrefs(); 
+	        initializePreferences(); 
 	        
 	        TabHost tabHost = getTabHost();
 	        tabHost.clearAllTabs();

@@ -3,8 +3,6 @@
  */
 package edu.washington.shan;
 
-import java.util.ArrayList;
-
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
