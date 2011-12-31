@@ -268,7 +268,7 @@ public class MainActivity extends TabActivity {
 	        mTabTags.clear();
 	        addTabsBasedOnPreferences();
 		}
-		else if(requestCode == ACTIVITY_SEARCH)
+		else if(requestCode == ACTIVITY_SEARCH) // returned from search activity
 		{
 			// nothing yet
 		}
@@ -441,9 +441,8 @@ public class MainActivity extends TabActivity {
     public void onSearch(View v)
     {
 		Log.v(TAG, "onSearch");
-    	Toast.makeText(this, "search", Toast.LENGTH_SHORT).show();
-    	//Intent intent = new Intent(this, SearchActivity.class);
-    	//startActivityForResult(intent, ACTIVITY_SEARCH);
+    	Intent intent = new Intent(this, SearchActivity.class);
+    	startActivityForResult(intent, ACTIVITY_SEARCH);
     }
 
 }

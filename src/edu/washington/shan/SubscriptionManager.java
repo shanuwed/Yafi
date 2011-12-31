@@ -122,7 +122,7 @@ public class SubscriptionManager {
 						rssItem.getLink().toString(), 
 						timeInMillisec, 
 						topicId, 
-						0);// status (TODO not in use)
+						0);// status
     			}
 			}
 			ret = true;

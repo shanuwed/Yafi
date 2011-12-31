@@ -3,6 +3,36 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical" >
+    
+    <!-- Start of actionbar -->
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        style="@style/TitleBar"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="left|top"
+        android:orientation="horizontal" >
+
+        <LinearLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:layout_gravity="center"
+                android:layout_marginBottom="8dip"
+                android:layout_marginLeft="4dip"
+                android:layout_marginRight="5dip"
+                android:layout_marginTop="6dip"
+                style="@style/TitleBarText"
+                android:paddingLeft="4dip"
+                android:text="@string/search_title" />
+        </LinearLayout>
+
+    </LinearLayout>
+    <!-- End of the actionbar -->
 
 	<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	    android:layout_width="fill_parent"
@@ -10,7 +40,8 @@
 	    android:orientation="horizontal">
 	    
 	    <EditText
-	        android:id="@+id/searchText1"
+	        android:id="@+id/search_edittext"
+	        android:singleLine="true"
 	        android:layout_gravity="center"
             android:layout_weight="1"
 	        android:layout_width="fill_parent"

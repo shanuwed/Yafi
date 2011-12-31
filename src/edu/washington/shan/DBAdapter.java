@@ -174,6 +174,36 @@ public class DBAdapter {
     }
     
     /**
+     * Return a Cursor positioned at the item that matches the given title
+     * 
+     * @param title
+     * @return
+     * @throws SQLException
+     */
+    public Cursor fetchItemsByMatchingTitle(String title) throws SQLException {
+    	
+        Cursor cursor =
+
+	        mDb.query(true, DBConstants.TABLE_NAME, new String[] {
+	        		DBConstants.KEY_ID, 
+	        		DBConstants.TITLE_NAME,
+	        		DBConstants.URL_NAME,
+	        		DBConstants.TIME_NAME,
+	        		DBConstants.TOPICID_NAME,
+	        		DBConstants.STATUS_NAME}, 
+	        		DBConstants.TITLE_NAME + " LIKE '%" + title + "%'", 
+	                null,
+	                null,
+	                null,
+	                null,
+	                null);
+        if (cursor != null) {
+            cursor.moveToFirst();
+        }
+        return cursor;
+    }
+    
+    /**
      * Return a Cursor positioned at the item that matches the given topicId
      * 
      * @param topicId
