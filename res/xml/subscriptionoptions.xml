@@ -41,8 +41,8 @@
             android:title="@string/title_gold"/>
         
         <CheckBoxPreference
-            android:key="silver"
-            android:title="@string/title_silver"/>
+            android:key="Silver"
+            android:title="@string/title_Silver"/>
         
         <CheckBoxPreference
             android:key="SteelIron"
@@ -61,8 +61,8 @@
         android:title="@string/title_financial">
         
         <CheckBoxPreference
-            android:key="AssetManagements"
-            android:title="@string/title_AssetManagements"/>
+            android:key="AssetManagement"
+            android:title="@string/title_AssetManagement"/>
         
         <CheckBoxPreference
             android:key="RealEstateDevelopment"
@@ -89,8 +89,8 @@
         android:title="@string/title_healthcare">
         
         <CheckBoxPreference
-            android:key="HealthcarePlans"
-            android:title="@string/title_HealthcarePlans"/>
+            android:key="HealthCarePlans"
+            android:title="@string/title_HealthCarePlans"/>
         
         <CheckBoxPreference
             android:key="Hospitals"

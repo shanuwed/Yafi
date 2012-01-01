@@ -4,7 +4,7 @@
     <string name="help_dialog_title">Yafi RSS Reader</string>
     <string name="help_dialog_msg">Powered by Yahoo! Finance</string>
     <string name="help_dialog_okay">Ok</string>
-    <string name="rss_retrieval_failed">RSS retrieval failed.</string>
+    <string name="rss_retrieval_failed">Cannot retrieve RSS feed. Please try again later.</string>
     <string name="prefscreen_title">RSS Subscription Preferences</string>
     <string name="prefscreen_summary">RSS Subscription Preferences</string>
     <string name="settings_prefscreen_title">Setting Preferences</string>
@@ -33,15 +33,15 @@
 	<string name="title_taxes">Taxes</string>
 	<string name="title_OilGasRefiningMarketing">Oil &amp; Gas Refining</string>
 	<string name="title_gold">Gold</string>
-	<string name="title_silver">Silver</string>
+	<string name="title_Silver">Silver</string>
 	<string name="title_SteelIron">Steel and Iron</string>
 	<string name="title_Synthetics">Synthetics</string>
-	<string name="title_AssetManagements">Asset Management</string>
+	<string name="title_AssetManagement">Asset Management</string>
 	<string name="title_RealEstateDevelopment">Real Estate Development</string>
 	<string name="title_CreditServices">Credit Services</string>
 	<string name="title_LifeInsurance">Life Insurance</string>
 	<string name="title_SavingsLoans">Savings and Loans</string>
-	<string name="title_HealthcarePlans">Health Care Plans</string>
+	<string name="title_HealthCarePlans">Health Care Plans</string>
 	<string name="title_Hospitals">Hospitals</string>
 	<string name="title_MedicalInstrumentsSupplies">Medical Instruments and Supplies</string>
 	<string name="title_ApplicationSoftware">Application Software</string>

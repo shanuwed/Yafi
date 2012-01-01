@@ -82,6 +82,8 @@ public class SearchActivity extends ListActivity {
 
 	private void search() 
     {
+    	Log.v(TAG, "Entering search()...");
+    	
         mDbAdapter = new DBAdapter(this);
         mDbAdapter.open();
 

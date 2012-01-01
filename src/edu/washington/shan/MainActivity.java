@@ -44,26 +44,31 @@ public class MainActivity extends TabActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         
+        mResources = getResources();
+        initialize();
+        
         mProgressBar = (ProgressBar)findViewById(R.id.progressBar1);
         mHandler = new Handler(mCallback);
-        mResources = getResources();
         mPrefKeyManager = PrefKeyManager.getInstance();
         mSyncManager = new SyncManager(this, mHandler); // pass the context and the handler
         mPrefKeyManager.initialize(this); // be sure to initialize before using it
         mTabTags = new ArrayList<String>();
         
-        prepareDatabase();
-        preparePreferences();
-        cleanupOldFeeds();
         addTabsBasedOnPreferences();
-        syncAtStartup();
+        cleanupOldFeeds();
         showAboutDialogBoxOnFirstRun();
         clearFirstTimeRunFlag();
+        syncAtStartup();
         
         // When a tab changes check to see if new RSS feeds are available for
         // the tab. Then sends a broadcast message to refresh the tab.
-        getTabHost().setOnTabChangedListener(new TabHost.OnTabChangeListener(){
-        	@Override
+        getTabHost().setOnTabChangedListener(mOnTabChangeListener);
+    }
+    
+    private TabHost.OnTabChangeListener mOnTabChangeListener = 
+    	new TabHost.OnTabChangeListener(){
+
+			@Override
         	public void onTabChanged(String tabId) {
         		// tabId == tabTag
         		
@@ -76,8 +81,7 @@ public class MainActivity extends TabActivity {
                 	Intent intent = new Intent(Constants.REFRESH_ACTION);
     		    	sendBroadcast(intent);
                 }
-        	}});        
-    }
+			}};
 
 	/* (non-Javadoc)
 	 * @see android.app.Activity#onCreateOptionsMenu(android.view.Menu)
@@ -144,15 +148,11 @@ public class MainActivity extends TabActivity {
 	 * Initializes the database by importing a pre-populated database
 	 * from the assets directory to the database directory.
 	 */
-	private void prepareDatabase() {
+	private void initialize() {
         if(isFirstTimeRunFlagSet()) {
         	// Copy the initial database from assets dir to database dir
         	DBHelper.importDatabase(this);
-        }
-	}
-	
-	private void preparePreferences(){
-        if(isFirstTimeRunFlagSet()) {
+        	
             String[] prefList = mResources.getStringArray(R.array.subscriptionoptions_keys);
             setPreference(prefList[0], true); // show 'US market' tab
             setPreference(prefList[1], true); // show 'Most Popular' tab
