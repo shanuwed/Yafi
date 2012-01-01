@@ -8,7 +8,7 @@
        <item>investingstrategies</item>
        <item>taxes</item>
        <item>OilGasRefiningMarketing</item>
-       <item>gold</item>
+       <item>Gold</item>
        <item>Silver</item>
        <item>SteelIron</item>
        <item>Synthetics</item>
@@ -33,7 +33,7 @@
 	    <item>@string/title_investingstrategies</item>
 	    <item>@string/title_taxes</item>
 	    <item>@string/title_OilGasRefiningMarketing</item>
-	    <item>@string/title_gold</item>
+	    <item>@string/title_Gold</item>
 	    <item>@string/title_Silver</item>
 	    <item>@string/title_SteelIron</item>
 	    <item>@string/title_Synthetics</item>

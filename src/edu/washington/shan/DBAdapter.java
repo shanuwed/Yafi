@@ -113,16 +113,22 @@ public class DBAdapter {
      * @param days
      * @return true if deleted, false otherwise
      */
-    public boolean deleteItemsOlderThan(int days) {
-    	
+    public boolean deleteItemsOlderThan(long days) {
+    	Log.v(TAG, "Entering deleteItemsOlderThan()");
 		if (days > 0) {
 			Calendar cal = Calendar.getInstance(); // now
-			cal.roll(Calendar.DAY_OF_YEAR, -days); // roll back x days from now
+			Log.v(TAG, "Now: " + Long.toString(cal.getTimeInMillis()));
+			long offset = days * 86400000;//= 24 * 60 * 60 * 1000
+			Log.v(TAG, "Offset: " + Long.toString(offset));
+			long t = cal.getTimeInMillis() - offset;
+			
+			String whereClause = DBConstants.TIME_NAME
+			+ "<" + Long.toString(t)
+			+ " AND " + DBConstants.STATUS_NAME
+			+ " = 0";
+			Log.v(TAG, "Where clause: " + whereClause);
 
-			return mDb.delete(DBConstants.TABLE_NAME, DBConstants.TIME_NAME
-					+ "<" + Long.toString(cal.getTimeInMillis())
-					+ " AND " + DBConstants.STATUS_NAME
-					+ " = 0", null) > 0;
+			return mDb.delete(DBConstants.TABLE_NAME, whereClause, null) > 0;
 		}
 		return false;
     }

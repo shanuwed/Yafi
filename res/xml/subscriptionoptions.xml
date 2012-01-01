@@ -37,8 +37,8 @@
             android:title="@string/title_OilGasRefiningMarketing"/>
         
         <CheckBoxPreference
-            android:key="gold"
-            android:title="@string/title_gold"/>
+            android:key="Gold"
+            android:title="@string/title_Gold"/>
         
         <CheckBoxPreference
             android:key="Silver"

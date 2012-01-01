@@ -44,21 +44,20 @@ public class WorkerThreadRunnable implements Runnable {
 	 */
 	@Override
 	public void run() {
-		
+		int index = 0;
 		boolean[] results = new boolean[mTabTags.length];
-		
-		for(int index=0; index< mTabTags.length; index++)
-		{
-			Log.v(TAG, "requesting RSS feed for:" + mTabTags[index]);
-			results[index] = false; 
-	
-	    	SubscriptionManager subscription = new SubscriptionManager(mContext);
-	    	if(subscription.checkConnection())
-	    	{
-	    		results[index] = subscription.getRssFeed(mTabTags[index]);
-	    	}
+		for (index = 0; index < mTabTags.length; index++)
+			results[index] = false;
+
+		SubscriptionManager subscription = new SubscriptionManager(mContext);
+		if (subscription.checkConnection()) {
+			for (index = 0; index < mTabTags.length; index++) {
+				Log.v(TAG, "requesting RSS feed for:" + mTabTags[index]);
+				results[index] = subscription.getRssFeed(mTabTags[index]);
+				// Even if one of them fails continue to process all.
+			}
 		}
-    	informFinish(results);
+		informFinish(results);
 	}
 	
 	/**

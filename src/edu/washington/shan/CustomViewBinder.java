@@ -4,7 +4,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import android.database.Cursor;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.SimpleCursorAdapter;

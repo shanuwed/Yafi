@@ -67,6 +67,13 @@ public class RssActivity extends ListActivity {
         		new IntentFilter(Constants.REFRESH_ACTION));
         super.onResume();
     }
+	
+	@Override
+	public void onDestroy()
+	{
+		mDbAdapter.close();
+		super.onDestroy();
+	}
 
 	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id) 

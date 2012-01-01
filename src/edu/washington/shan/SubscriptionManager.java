@@ -2,6 +2,7 @@ package edu.washington.shan;
 
 import java.io.IOException;
 import java.net.Socket;
+import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.Calendar;
 import java.util.List;
@@ -63,6 +64,10 @@ public class SubscriptionManager {
     	{
 			Log.e(TAG, e.toString());
 		} 
+        catch (SocketException e)
+        {
+        	Log.e(TAG, e.toString());
+        }
     	catch (IOException e) 
     	{
 			Log.e(TAG, e.toString());
@@ -85,11 +90,19 @@ public class SubscriptionManager {
         {
 			Log.e("Unable to read RSS feed due to UnknownHostException", e.getMessage());
 		}
-        mDbAdapter.close();
+        catch (SocketException e)
+        {
+        	Log.e("Unable to read RSS feed due to SocketException:", e.getMessage());
+        }
+        finally
+        {
+        	mDbAdapter.close();
+        }
         return ret;
     }
     
-    private boolean getRssFeedPrivate(String url, int topicId) throws java.net.UnknownHostException
+    private boolean getRssFeedPrivate(String url, int topicId) 
+    	throws java.net.UnknownHostException, java.net.SocketException
     {
 		Log.v(TAG, "Requesting RSS feed for:" + url + " and topicId:" + topicId);
 		
