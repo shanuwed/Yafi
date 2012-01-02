@@ -118,7 +118,7 @@ public class DBAdapter {
 		if (days > 0) {
 			Calendar cal = Calendar.getInstance(); // now
 			Log.v(TAG, "Now: " + Long.toString(cal.getTimeInMillis()));
-			long offset = days * 86400000;//= 24 * 60 * 60 * 1000
+			long offset = days * 86400000L;//= 24 * 60 * 60 * 1000
 			Log.v(TAG, "Offset: " + Long.toString(offset));
 			long t = cal.getTimeInMillis() - offset;
 			

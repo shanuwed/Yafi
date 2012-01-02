@@ -62,16 +62,20 @@ public class SubscriptionManager {
 		} 
     	catch (UnknownHostException e) 
     	{
-			Log.e(TAG, e.toString());
+			Log.e(TAG, e.getMessage(), e);
 		} 
         catch (SocketException e)
         {
-        	Log.e(TAG, e.toString());
+        	Log.e(TAG, e.getMessage(), e);
         }
     	catch (IOException e) 
     	{
-			Log.e(TAG, e.toString());
+			Log.e(TAG, e.getMessage(), e);
 		}
+    	catch(Exception e)
+    	{
+            Log.e(TAG, e.getMessage(), e);
+    	}
     	return result;
     }
     
@@ -88,11 +92,19 @@ public class SubscriptionManager {
 		} 
         catch (UnknownHostException e) 
         {
-			Log.e("Unable to read RSS feed due to UnknownHostException", e.getMessage());
+			Log.e(TAG, e.getMessage(), e);
 		}
+        catch(org.apache.http.conn.HttpHostConnectException e)
+        {
+            Log.e(TAG, e.getMessage(), e);
+        }
         catch (SocketException e)
         {
-        	Log.e("Unable to read RSS feed due to SocketException:", e.getMessage());
+        	Log.e(TAG, e.getMessage(), e);
+        }
+        catch(Exception e)
+        {
+            Log.e(TAG, e.getMessage(), e);
         }
         finally
         {
@@ -125,8 +137,9 @@ public class SubscriptionManager {
     				timeInMillisec = Calendar.getInstance().getTimeInMillis();
     			}
     			
-    			// Does the item already exist?
-    			// TODO: query can be further constrained by topicId
+    			// Check to see if this title already exists
+    			// TODO To ensure it's a unique title you can constrain
+    			// the query with topicId.
     			Cursor cursor = mDbAdapter.fetchItemsByTitle(sqlTitle);
     			((Activity)mContext).startManagingCursor(cursor);
     			if(cursor.getCount() == 0)
@@ -142,11 +155,11 @@ public class SubscriptionManager {
 		} 
         catch (RSSReaderException e) 
         {
-			Log.e("Failed to read RSS feed:", e.toString());
+			Log.e(TAG, e.getMessage(), e);
 		}
         catch (java.lang.NullPointerException e)
         {
-			Log.e("Failed to read RSS feed:", e.toString());
+			Log.e(TAG, e.getMessage(), e);
 		}
 		return ret;
     }

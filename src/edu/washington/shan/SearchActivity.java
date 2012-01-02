@@ -41,6 +41,8 @@ public class SearchActivity extends ListActivity {
 				mSearchTerm = extras.getString(key);
 			}
 		}
+        mDbAdapter = new DBAdapter(this);
+        mDbAdapter.open();
         search();
     }
 	
@@ -67,6 +69,13 @@ public class SearchActivity extends ListActivity {
 		restoreState();
 	}
 
+    @Override
+    public void onDestroy()
+    {
+        mDbAdapter.close();
+        super.onDestroy();
+    }
+    
 	private void saveState() {
         SharedPreferences sharedPref = getPreferences(MODE_PRIVATE);
     	SharedPreferences.Editor editor = sharedPref.edit();
@@ -80,43 +89,51 @@ public class SearchActivity extends ListActivity {
         mEditText.setText(mSearchTerm);
 	}
 
-	private void search() 
+    private void search()
     {
-    	Log.v(TAG, "Entering search()...");
-    	
-        mDbAdapter = new DBAdapter(this);
-        mDbAdapter.open();
+        Log.v(TAG, "Entering search()...");
 
-    	mSearchTerm = mEditText.getText().toString();
-    	if(mSearchTerm != null && mSearchTerm.length() > 0)
-    	{
-	    	Log.v(TAG, "search called for: " + mSearchTerm);
-	    	
-	        // Get the rows from the database and create the item list
-	        mCursor = mDbAdapter.fetchItemsByMatchingTitle(mSearchTerm);
-	        startManagingCursor(mCursor);
-	
-	        // Create an array to specify the fields we want to display in the list (only TITLE)
-	        String[] from = new String[]{DBConstants.TITLE_NAME, 
-	        		DBConstants.URL_NAME,
-	        		DBConstants.TIME_NAME,
-	        		DBConstants.STATUS_NAME};
-	
-	        // and an array of the fields we want to bind those fields to
-	        int[] to = new int[]{R.id.rss_row_text_content, 
-	        		R.id.rss_row_text_title,
-	        		R.id.rss_row_text_date,
-	        		R.id.rss_row_thumbImage};
-	
-	        // Now create a simple cursor adapter and set it to display
-	        SimpleCursorAdapter adapter = 
-	        	new SimpleCursorAdapter(this, R.layout.rss_row, mCursor, from, to);
-	        adapter.setViewBinder(customViewBinder);
-	        setListAdapter(adapter);
-	        
-	        stopManagingCursor(mCursor); // TODO is this good enough?
-    	}
-    	mDbAdapter.close();
+        try
+        {
+            mSearchTerm = mEditText.getText().toString();
+            if (mSearchTerm != null && mSearchTerm.length() > 0)
+            {
+                Log.v(TAG, "search called for: " + mSearchTerm);
+
+                // Get the rows from the database and create the item list
+                mCursor = mDbAdapter.fetchItemsByMatchingTitle(mSearchTerm);
+                startManagingCursor(mCursor);
+
+                // Create an array to specify the fields we want to display in
+                // the list (only TITLE)
+                String[] from = new String[]
+                { DBConstants.TITLE_NAME, DBConstants.URL_NAME,
+                        DBConstants.TIME_NAME, DBConstants.STATUS_NAME };
+
+                // and an array of the fields we want to bind those fields to
+                int[] to = new int[]
+                { R.id.rss_row_text_content, R.id.rss_row_text_title,
+                        R.id.rss_row_text_date, R.id.rss_row_thumbImage };
+
+                // Now create a simple cursor adapter and set it to display
+                SimpleCursorAdapter adapter = new SimpleCursorAdapter(this,
+                        R.layout.rss_row, mCursor, from, to);
+                adapter.setViewBinder(customViewBinder);
+                setListAdapter(adapter);
+            }
+        }
+        catch (java.lang.IllegalStateException e)
+        {
+            Log.e(TAG, e.getMessage(), e);
+        }
+        catch (java.lang.RuntimeException e)
+        {
+            Log.e(TAG, e.getMessage(), e);
+        }
+        catch(Exception e)
+        {
+            Log.e(TAG, e.getMessage(), e);
+        }
     }
 	
 	/**

@@ -1,6 +1,7 @@
 package edu.washington.shan;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import android.app.AlertDialog;
@@ -144,7 +145,7 @@ public class MainActivity extends TabActivity {
 	}
 
 	/**
-	 * Prepare database for the first run after install
+	 * Prepare database for the first run after install.
 	 * Initializes the database by importing a pre-populated database
 	 * from the assets directory to the database directory.
 	 */
@@ -159,6 +160,10 @@ public class MainActivity extends TabActivity {
         }
 	}
 	
+	/**
+	 * Returns true if this is first time app is launched
+	 * @return
+	 */
 	private boolean isFirstTimeRunFlagSet(){
 		// Determine if this is the first time running the app
 		// Shared preference for 'initialized' is stored in 
@@ -170,6 +175,9 @@ public class MainActivity extends TabActivity {
         return false;
 	}
 	
+	/**
+	 * Clears 'first time run' flag
+	 */
 	private void clearFirstTimeRunFlag(){
         SharedPreferences sharedPref = getPreferences(MODE_PRIVATE);
     	// Now set the "initialized" flag
@@ -193,7 +201,7 @@ public class MainActivity extends TabActivity {
     }
     
     /**
-     * Given preference key and value it sets the shared preference
+     * Given a preference key and a value it sets the shared preference
      * @param prefKey
      * @param value
      */
@@ -209,7 +217,7 @@ public class MainActivity extends TabActivity {
     }
     
     /**
-     * Deletes old feeds if preferences are set.
+     * Deletes old feeds if the preference is set.
      */
     private void cleanupOldFeeds() 
     {
@@ -228,20 +236,59 @@ public class MainActivity extends TabActivity {
     
     /**
      * It syncs RSS feeds if the preference to 'sync at startup' is selected.
-     * 
+     * To avoid unnecessary sync make sure it's been 12 hours since
+     * the last sync. 
      */
     private void syncAtStartup()
     {
-        SharedPreferences sharedPref = getSharedPreferences(
+        Log.v(TAG, "Entering syncAtStartup");
+    	SharedPreferences sharedPref = getSharedPreferences(
         		mResources.getString(R.string.pref_filename), 
         		MODE_PRIVATE);
         
-        if(sharedPref.getBoolean(
+        if(okToSync(12) && sharedPref.getBoolean(
         		mResources.getString(R.string.settings_auto_sync_key), false)){
         	sync();
         }
     }
 
+	/**
+	 * Returns true if it's been x hours since last sync or
+	 * if it's the first time calling this function, or
+	 * input argument hours is less than or equal to zero.
+	 * @param hours
+	 * @return
+	 */
+    private boolean okToSync(long hours)
+	{
+        Log.v(TAG, "Entering okToSync");
+        if(hours <= 0)
+            return true;
+        
+        SharedPreferences sharedPref = getPreferences(MODE_PRIVATE);
+        long lastSyncedAt = sharedPref.getLong("lastSyncedAt", -1);
+        if(lastSyncedAt == -1)
+            return true; // if the preference is not set it means it's first time.
+        
+		long offset = hours * 60L * 60L * 1000L; // hours->milliseconds
+		long now = Calendar.getInstance().getTimeInMillis();
+		if(lastSyncedAt + offset <= now)
+			return true;
+		
+        return false;
+	}
+	
+	/**
+	 * Writes a timestamp for 'last synced time' in a shared preference
+	 */
+    private void markSyncTime()
+	{
+        SharedPreferences sharedPref = getPreferences(MODE_PRIVATE);
+    	SharedPreferences.Editor editor = sharedPref.edit();
+    	editor.putLong("lastSyncedAt", Calendar.getInstance().getTimeInMillis());
+    	editor.commit();
+	}
+	
     /* (non-Javadoc)
 	 * @see android.app.Activity#onActivityResult(int, int, android.content.Intent)
 	 */
@@ -402,6 +449,7 @@ public class MainActivity extends TabActivity {
 			mProgressBar.setVisibility(ProgressBar.VISIBLE);
 			String[] tabTags = mTabTags.toArray(new String[]{}); 
 			mSyncManager.sync(tabTags);
+			markSyncTime();
 		}
 	}
 	
